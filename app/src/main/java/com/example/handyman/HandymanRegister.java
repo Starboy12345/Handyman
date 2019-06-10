@@ -83,27 +83,6 @@ public class HandymanRegister extends AppCompatActivity {
         occupation = spinnercode;
 
 
-        if (TextUtils.isEmpty(fullname)) {
-            Toast.makeText(this, "pls enter First Name", Toast.LENGTH_LONG).show();
-        }
-
-
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "pls enter valid Email", Toast.LENGTH_LONG).show();
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "pls enter Password", Toast.LENGTH_LONG).show();
-        }
-
-        if (TextUtils.isEmpty(confirmpassword)) {
-            Toast.makeText(this, "pls Confirm Password", Toast.LENGTH_LONG).show();
-        }
-
-        if (TextUtils.isEmpty(number)) {
-            Toast.makeText(this, "pls enter Phone number", Toast.LENGTH_LONG).show();
-        }
-
         if (!TextUtils.isEmpty(fullname) && !TextUtils.isEmpty(email)
                 && !TextUtils.isEmpty(number) && !TextUtils.isEmpty(password)
                 && !TextUtils.isEmpty(confirmpassword))
@@ -218,6 +197,9 @@ public class HandymanRegister extends AppCompatActivity {
                 toast.show();}
 
 
+        }else
+        {
+            Toast.makeText(this,"Fill all Fields",Toast.LENGTH_SHORT).show();
         }
 
 

@@ -68,15 +68,16 @@ public class Main2Activity extends AppCompatActivity
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View navigationHeader = navigationView.getHeaderView(0);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        FullName = navigationView.findViewById(R.id.txtfullname);
-        Email = navigationView.findViewById(R.id.txtemail);
-        userImage = navigationView.findViewById(R.id.userprofileimage);
+        FullName = navigationHeader.findViewById(R.id.txtfullname);
+        Email = navigationHeader.findViewById(R.id.txtemail);
+        userImage = navigationHeader.findViewById(R.id.userprofileimage);
     }
 
     @Override
