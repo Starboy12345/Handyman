@@ -4,20 +4,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -45,7 +42,7 @@ public class MainActivityCustomers extends AppCompatActivity
     FirebaseUser firebaseUser;
     private DatabaseReference UserRef;
     private static final String TAG = "MainActivity";
-    private TextView FullName,Email;
+    private TextView FullName, Email;
     private CircleImageView userImage;
 
 
@@ -54,13 +51,13 @@ public class MainActivityCustomers extends AppCompatActivity
     private ArrayList<ImageModel> imageModelArrayList;
 
     private int[] myImageList = new int[]{R.drawable.mechanic, R.drawable.pest,
-            R.drawable.plumber,R.drawable.tiler
-            ,R.drawable.tv,R.drawable.carpenter,
-            R.drawable.roller,R.drawable.paint,R.drawable.gardener};
+            R.drawable.plumber, R.drawable.tiler
+            , R.drawable.tv, R.drawable.carpenter,
+            R.drawable.roller, R.drawable.paint, R.drawable.gardener};
     private String[] myImageNameList = new String[]{"Mechanic", "Pest Control",
-            "Plumber","Tiler"
-            ,"TV Installation","Carpenter",
-            "Roller","Painter","Gardener"};
+            "Plumber", "Tiler"
+            , "TV Installation", "Carpenter",
+            "Roller", "Painter", "Gardener"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +68,7 @@ public class MainActivityCustomers extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
-        if (mAuth.getCurrentUser() == null)
-        {
+        if (mAuth.getCurrentUser() == null) {
             return;
         }
         String userId = firebaseUser.getUid();
@@ -80,23 +76,26 @@ public class MainActivityCustomers extends AppCompatActivity
         UserRef.keepSynced(true);
 
 
-
-
         gvGallery = findViewById(R.id.gv);
 
         imageModelArrayList = populateList();
 
-        gridBaseAdapter = new GridBaseAdapter(getApplicationContext(),imageModelArrayList);
+        gridBaseAdapter = new GridBaseAdapter(getApplicationContext(), imageModelArrayList);
         gvGallery.setAdapter(gridBaseAdapter);
 
         gvGallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivityCustomers.this, myImageNameList[position]+" Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivityCustomers.this, myImageNameList[position] + " Clicked", Toast.LENGTH_SHORT).show();
+
+                if (position == 0) {
+                    startActivity(new Intent(MainActivityCustomers.this, ActivityMechanicList.class));
+                    finish();
+                }
+
+
             }
         });
-
-
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -155,14 +154,12 @@ public class MainActivityCustomers extends AppCompatActivity
         if (id == R.id.nav_home) {
             startActivity(new Intent(this, MainActivityCustomers.class));
             // Handle the camera action
-        }
-          else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(this, EditProfile.class));
 
         } else if (id == R.id.nav_tools) {
 
-        } else if (id==R.id.nav_logout)
-        {
+        } else if (id == R.id.nav_logout) {
             AlertDialog.Builder a_builder = new AlertDialog.Builder(MainActivityCustomers.this);
             a_builder.setMessage("Do you really want to Logout")
                     .setCancelable(true)
@@ -170,9 +167,8 @@ public class MainActivityCustomers extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
-                            try{
-                                if (firebaseUser!=null)
-                                {
+                            try {
+                                if (firebaseUser != null) {
                                     mAuth.signOut();
                                     Intent Login = new Intent(MainActivityCustomers.this, WelcomeActivity.class);
                                     Login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -180,8 +176,7 @@ public class MainActivityCustomers extends AppCompatActivity
                                     finish();
 
                                 }
-                            }
-                            catch( Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
@@ -193,7 +188,7 @@ public class MainActivityCustomers extends AppCompatActivity
                 }
             });
 
-            AlertDialog alert= a_builder.create();
+            AlertDialog alert = a_builder.create();
             alert.setTitle("Alert!!!");
             alert.show();
         }
@@ -218,7 +213,7 @@ public class MainActivityCustomers extends AppCompatActivity
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -245,8 +240,8 @@ public class MainActivityCustomers extends AppCompatActivity
                     } else {
                         Log.d(TAG, "No details: a default photo has be replaced");
                         Glide.with(getApplicationContext()).load(R.drawable.defaultavatar).into(userImage);
-                    }}
-                catch(Exception e){
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -256,9 +251,9 @@ public class MainActivityCustomers extends AppCompatActivity
 
                 try {
                     Log.d(TAG, "Error : " + databaseError.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                catch (Exception e )
-                { e.printStackTrace();}
             }
         });
 
@@ -270,11 +265,11 @@ public class MainActivityCustomers extends AppCompatActivity
         finish();
     }
 
-    private ArrayList<ImageModel> populateList(){
+    private ArrayList<ImageModel> populateList() {
 
         ArrayList<ImageModel> list = new ArrayList<>();
 
-        for(int i = 0; i < 9; i++){
+        for (int i = 0; i < 9; i++) {
             ImageModel imageModel = new ImageModel();
             imageModel.setName(myImageNameList[i]);
             imageModel.setImage_drawable(myImageList[i]);

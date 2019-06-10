@@ -5,11 +5,20 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityCarpenterList">
+    tools:context=".ActivityMechanicList">
 
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarMechanic"
+        app:title="Available mechanics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewCarpenter"
+        android:id="@+id/recyclerViewMechanic"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

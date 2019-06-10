@@ -4,6 +4,9 @@ public class ImageModel {
     private String name;
     private int image_drawable;
 
+    public ImageModel() {
+    }
+
     public String getName() {
         return name;
     }

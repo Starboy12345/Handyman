@@ -11,6 +11,8 @@ public class User {
     private String location;
     private String details;
 
+    public User() {
+    }
 
     public User(String userId, String email, String mobileNumber, String fullName, String occupation) {
         UserId = userId;

@@ -5,14 +5,12 @@ public class Requestdetailsclass {
     private String fullName;
     private String messasge;
     private String occupation;
+    private String response;
+    private String date;
 
-    public Requestdetailsclass(String userId, String fullName, String messasge, String occupation) {
-        UserId = userId;
-        this.fullName = fullName;
-        this.messasge = messasge;
-        this.occupation = occupation;
-
+    public Requestdetailsclass() {
     }
+
 
     public String getUserId() {
         return UserId;
@@ -46,4 +44,19 @@ public class Requestdetailsclass {
         this.occupation = occupation;
     }
 
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

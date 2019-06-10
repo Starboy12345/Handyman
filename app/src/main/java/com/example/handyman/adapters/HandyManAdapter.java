@@ -16,7 +16,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MechanicAdapter extends FirebaseRecyclerAdapter<User, MechanicAdapter.MechanicViewHolder> {
+public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapter.MechanicViewHolder> {
 
 
     /**
@@ -25,7 +25,7 @@ public class MechanicAdapter extends FirebaseRecyclerAdapter<User, MechanicAdapt
      *
      * @param options
      */
-    public MechanicAdapter(@NonNull FirebaseRecyclerOptions<User> options) {
+    public HandyManAdapter(@NonNull FirebaseRecyclerOptions<User> options) {
         super(options);
     }
 
@@ -36,13 +36,20 @@ public class MechanicAdapter extends FirebaseRecyclerAdapter<User, MechanicAdapt
         holder.showUserPhoto(model.getImage());
         holder.showUserPhoto(model.getMobileNumber());
         holder.showNumber(model.getMobileNumber());
+
+        holder.btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @NonNull
     @Override
     public MechanicViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return new MechanicViewHolder(LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.layout_view_carpenter, viewGroup, false));
+                .inflate(R.layout.layout_view_all_handy_men, viewGroup, false));
     }
 
     //an inner class to hold the views to be inflated
