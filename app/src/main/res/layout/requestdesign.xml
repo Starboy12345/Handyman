@@ -7,7 +7,7 @@
     android:background="#561C2F72">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView"
+        android:id="@+id/circleImageViewprofile"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
@@ -17,19 +17,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtsendername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="from username"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/circleImageView"
-        app:layout_constraintStart_toStartOf="@+id/circleImageView"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+        app:layout_constraintEnd_toEndOf="@+id/circleImageViewprofile"
+        app:layout_constraintStart_toStartOf="@+id/circleImageViewprofile"
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewprofile" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txtmessgaesent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -39,8 +39,8 @@
         android:textColor="#0C0D16"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintStart_toStartOf="@+id/txtsendername"
+        app:layout_constraintTop_toBottomOf="@+id/txtsendername" />
 
     <ImageView
         android:id="@+id/imageView5"
@@ -49,7 +49,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/txtmessgaesent"
         app:srcCompat="@drawable/ic_check_black_24dp" />
 
     <TextView

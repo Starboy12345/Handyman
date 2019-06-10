@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".models.Listofrequest"></activity>
+        <activity android:name=".Listofrequest"></activity>
         <activity android:name=".Chooseurregistertype" />
         <activity android:name=".HandymanRegister" />
         <activity android:name=".EditProfile" />

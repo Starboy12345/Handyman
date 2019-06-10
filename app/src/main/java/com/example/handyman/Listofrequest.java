@@ -1,4 +1,4 @@
-package com.example.handyman.models;
+package com.example.handyman;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
