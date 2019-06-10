@@ -21,6 +21,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import javax.security.auth.callback.CallbackHandler;
+
 public class Login extends AppCompatActivity {
 
     private TextInputLayout UserEmail, UserPassword;
@@ -142,7 +144,7 @@ public class Login extends AppCompatActivity {
     private void SendUsertoRegisterActivity()
     {
         // send user to register activity
-        Intent registeruser = new Intent(Login.this, CustomerRegister.class);
+        Intent registeruser = new Intent(Login.this, Chooseurregistertype.class);
         startActivity(registeruser);
     }
 }

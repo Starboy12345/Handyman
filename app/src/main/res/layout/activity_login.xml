@@ -28,7 +28,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:text="Customer Login"
+        android:text="Login"
         android:textColor="#090A0A"
         android:textSize="18sp"
         android:textStyle="bold"

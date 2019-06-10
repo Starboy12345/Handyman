@@ -63,7 +63,7 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        Userfullname = findViewById(R.id.TxtFullName);
+        Userfullname = findViewById(R.id.Txtprofilefullname);
         Useremailprofile = findViewById(R.id.TxtprofileEmail);
         UserphoneNumberprofile = findViewById(R.id.Txtprofilephonenumber);
         UserOccupationprofile = findViewById(R.id.TxtprofileOccupation);

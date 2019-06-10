@@ -29,8 +29,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class CustomerRegister extends AppCompatActivity {
+public class HandymanRegister extends AppCompatActivity {
 
+    private Spinner spinner1;
+    String spinnercode;
     private TextInputLayout UserFullname, UserEmail, UserPassword, UserVPassword, UserNumber;
     private Button createaccountbutton;
     private FirebaseAuth mAuth;
@@ -41,27 +43,27 @@ public class CustomerRegister extends AppCompatActivity {
     private static final String TAG = "Register";
     private Vibrator vibrator;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_register);
+        setContentView(R.layout.activity_handyman_register);
 
 
         mAuth = FirebaseAuth.getInstance();
 //vibration
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-
         UserRef = FirebaseDatabase.getInstance().getReference("Users");
-       UserFullname=findViewById(R.id.TxtFullName);
+        UserFullname=findViewById(R.id.TxtFullName);
         UserNumber = findViewById(R.id.TxtMobileNumberSignup);
         UserEmail = findViewById(R.id.TxtEmailsignup);
         UserPassword = findViewById(R.id.TxtPasswordsignup);
         UserVPassword = findViewById(R.id.TxtConfirmPasswordSignup);
         createaccountbutton = findViewById(R.id.btnregisterSignup);
         loadingbar = new ProgressDialog(this);
-
+        //spinner code
+        spinner1 =  findViewById(R.id.spinner1);
+        // addListenerOnButton();
+        spinner1.setOnItemSelectedListener(new HandymanRegister.CustomOnItemSelectedListener());
 
         createaccountbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,11 +75,13 @@ public class CustomerRegister extends AppCompatActivity {
     }
 
     private void createnewaccount() {
-       fullname = UserFullname.getEditText().getText().toString();
+        fullname = UserFullname.getEditText().getText().toString();
         email = UserEmail.getEditText().getText().toString();
         password = UserPassword.getEditText().getText().toString();
         confirmpassword = UserVPassword.getEditText().getText().toString();
         number = UserNumber.getEditText().getText().toString();
+        occupation = spinnercode;
+
 
         if (TextUtils.isEmpty(fullname)) {
             Toast.makeText(this, "pls enter First Name", Toast.LENGTH_LONG).show();
@@ -99,10 +103,6 @@ public class CustomerRegister extends AppCompatActivity {
         if (TextUtils.isEmpty(number)) {
             Toast.makeText(this, "pls enter Phone number", Toast.LENGTH_LONG).show();
         }
-
-
-
-
 
         if (!TextUtils.isEmpty(fullname) && !TextUtils.isEmpty(email)
                 && !TextUtils.isEmpty(number) && !TextUtils.isEmpty(password)
@@ -162,7 +162,7 @@ public class CustomerRegister extends AppCompatActivity {
                                                         vibrator.vibrate(2000);
 
                                                     }
-                                                    new AlertDialog.Builder(CustomerRegister.this)
+                                                    new AlertDialog.Builder(HandymanRegister.this)
                                                             .setMessage("Hello" + " " + fullname + " " + "\n" + "an email verification link has been sent to " + email + "\n" +
                                                                     "please verify to continue")
                                                             .setPositiveButton("OK",
@@ -173,7 +173,7 @@ public class CustomerRegister extends AppCompatActivity {
 //
                                                                             dialog.dismiss();
 
-                                                                            startActivity(new Intent(CustomerRegister.this,Login.class));
+                                                                            startActivity(new Intent(HandymanRegister.this,Login.class));
                                                                             finish();
 
 
@@ -192,7 +192,7 @@ public class CustomerRegister extends AppCompatActivity {
 
 
                                     } else {
-                                        Toast toast = Toast.makeText(CustomerRegister.this, " Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT);
+                                        Toast toast = Toast.makeText(HandymanRegister.this, " Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT);
                                         toast.setGravity(Gravity.CENTER, 0, 0);
                                         toast.show();
 
@@ -204,7 +204,7 @@ public class CustomerRegister extends AppCompatActivity {
                         } else
                         {
                             String message = task.getException().getMessage();
-                            Toast.makeText(CustomerRegister.this, "error occurred" + message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HandymanRegister.this, "error occurred" + message, Toast.LENGTH_SHORT).show();
                             loadingbar.dismiss();
                         }
 
@@ -224,4 +224,16 @@ public class CustomerRegister extends AppCompatActivity {
 
     }
 
+    private class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            spinnercode = parent.getItemAtPosition(pos).toString();
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg0) {
+            // TODO Auto-generated method stub
+        }
+
+    }
 }
