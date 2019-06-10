@@ -237,7 +237,7 @@ public class Main2Activity extends AppCompatActivity
     }
 
     private void SendUserToLoginActivity() {
-        Intent Login = new Intent(Main2Activity.this, WelcomeActivity.class);
+        Intent Login = new Intent(Main2Activity.this, Login.class);
         startActivity(Login);
         finish();
     }
