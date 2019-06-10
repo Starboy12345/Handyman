@@ -5,11 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-<<<<<<< HEAD
     tools:context=".MainActivityCustomers"
-=======
-    tools:context=".Main2Activity"
->>>>>>> 9acbdc8... first commit
     tools:showIn="@layout/app_bar_main2">
 
 
@@ -28,8 +24,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-<<<<<<< HEAD
 </android.support.constraint.ConstraintLayout>
-=======
-</android.support.constraint.ConstraintLayout>
->>>>>>> 9acbdc8... first commit
