@@ -1,0 +1,112 @@
+package com.example.handyman.adapters;
+
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.example.handyman.R;
+import com.example.handyman.models.User;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class MechanicAdapter extends FirebaseRecyclerAdapter<User, MechanicAdapter.MechanicViewHolder> {
+
+
+    /**
+     * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
+     * {@link FirebaseRecyclerOptions} for configuration options.
+     *
+     * @param options
+     */
+    public MechanicAdapter(@NonNull FirebaseRecyclerOptions<User> options) {
+        super(options);
+    }
+
+    @Override
+    protected void onBindViewHolder(@NonNull MechanicViewHolder holder, int position, @NonNull User model) {
+        holder.showName(model.getFullName());
+        holder.showOccupation(model.getOccupation());
+        holder.showUserPhoto(model.getImage());
+        holder.showUserPhoto(model.getMobileNumber());
+        holder.showNumber(model.getMobileNumber());
+    }
+
+    @NonNull
+    @Override
+    public MechanicViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        return new MechanicViewHolder(LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.layout_view_carpenter, viewGroup, false));
+    }
+
+    //an inner class to hold the views to be inflated
+    public class MechanicViewHolder extends RecyclerView.ViewHolder {
+        private View view;
+        private Button btnView;
+
+
+        MechanicViewHolder(@NonNull View itemView) {
+            super(itemView);
+            view = itemView;
+            btnView = view.findViewById(R.id.btnView);
+        }
+
+/*
+        void showDate(Long date) {
+
+            TextView txtDate = view.findViewById(R.id.txtShowLeaveDate);
+//            SimpleDateFormat sfd = new SimpleDateFormat("'Sent on ' dd-MM-yyyy '@' hh:mm aa",
+//                    Locale.US);
+
+            try {
+                txtDate.setText(GetDateTime.getFormattedDate(new Date(date)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+*/
+
+        //display the user photo
+        void showUserPhoto(String urlOfImage) {
+            CircleImageView checkInPhoto = view.findViewById(R.id.imgViewHandyMan);
+
+            Glide.with(view).load(urlOfImage).into(checkInPhoto);
+        }
+
+
+        //display the Name
+        void showName(String s) {
+            TextView name = view.findViewById(R.id.txtNameOfHandyMan);
+            name.setText(s);
+        }
+
+        //display the occupation
+        void showOccupation(String s) {
+            TextView occ = view.findViewById(R.id.txtOccupationOfHandyMan);
+            occ.setText(s);
+        }
+
+
+        //display the location
+        void showLocation(String s) {
+            TextView loc = view.findViewById(R.id.txtLocationOfHandyMan);
+            loc.setText(s);
+        }
+
+        //display the number
+        void showNumber(String s) {
+            TextView name = view.findViewById(R.id.txtHandyManNumber);
+            name.setText(s);
+        }
+
+
+    }
+
+}

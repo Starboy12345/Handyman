@@ -10,6 +10,6 @@ public class Listofrequest extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listofrequest);
+        setContentView(R.layout.activity_carpenter_list);
     }
 }

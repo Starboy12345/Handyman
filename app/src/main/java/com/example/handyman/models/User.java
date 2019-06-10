@@ -1,12 +1,47 @@
 package com.example.handyman.models;
 
 public class User {
+
+    private String UserId;
+    private String email;
+    private String mobileNumber;
+    private String fullName;
+    private String occupation;
+    private String image;
+    private String location;
+    private String details;
+
+
     public User(String userId, String email, String mobileNumber, String fullName, String occupation) {
         UserId = userId;
         this.email = email;
         this.mobileNumber = mobileNumber;
         this.fullName = fullName;
         this.occupation = occupation;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public User(String userId, String email, String mobileNumber, String fullName, String occupation, String about) {
@@ -18,11 +53,6 @@ public class User {
         this.about = about;
     }
 
-    private String UserId;
-    private String email;
-    private String mobileNumber;
-    private String fullName;
-    private String occupation;
 
     public String getAbout() {
         return about;
