@@ -18,9 +18,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.handyman.models.GridBaseAdapter;
+import com.example.handyman.models.ImageModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,11 +48,26 @@ public class MainActivityCustomers extends AppCompatActivity
     private TextView FullName,Email;
     private CircleImageView userImage;
 
+
+    private GridView gvGallery;
+    private GridBaseAdapter gridBaseAdapter;
+    private ArrayList<ImageModel> imageModelArrayList;
+
+    private int[] myImageList = new int[]{R.drawable.mechanic, R.drawable.pest,
+            R.drawable.plumber,R.drawable.tiler
+            ,R.drawable.tv,R.drawable.carpenter,
+            R.drawable.roller,R.drawable.paint,R.drawable.gardener};
+    private String[] myImageNameList = new String[]{"Mechanic", "Pest Control",
+            "Plumber","Tiler"
+            ,"TV Installation","Carpenter",
+            "Roller","Painter","Gardener"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_customer_main_page);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
@@ -57,26 +79,39 @@ public class MainActivityCustomers extends AppCompatActivity
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
         UserRef.keepSynced(true);
 
-        setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+
+
+        gvGallery = findViewById(R.id.gv);
+
+        imageModelArrayList = populateList();
+
+        gridBaseAdapter = new GridBaseAdapter(getApplicationContext(),imageModelArrayList);
+        gvGallery.setAdapter(gridBaseAdapter);
+
+        gvGallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivityCustomers.this, myImageNameList[position]+" Clicked", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View navigationHeader = navigationView.getHeaderView(0);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        FullName = navigationView.findViewById(R.id.txtfullname);
-        Email = navigationView.findViewById(R.id.txtemail);
-        userImage = navigationView.findViewById(R.id.userprofileimage);
+        FullName = navigationHeader.findViewById(R.id.txtfullname);
+        Email = navigationHeader.findViewById(R.id.txtemail);
+        userImage = navigationHeader.findViewById(R.id.userprofileimage);
     }
 
     @Override
@@ -120,16 +155,11 @@ public class MainActivityCustomers extends AppCompatActivity
         if (id == R.id.nav_home) {
             startActivity(new Intent(this, MainActivityCustomers.class));
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(this, Handymantypes.class));
-
-        } else if (id == R.id.nav_slideshow) {
+        }
+          else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(this, EditProfile.class));
 
         } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
 
         } else if (id==R.id.nav_logout)
         {
@@ -166,8 +196,6 @@ public class MainActivityCustomers extends AppCompatActivity
             AlertDialog alert= a_builder.create();
             alert.setTitle("Alert!!!");
             alert.show();
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -240,6 +268,20 @@ public class MainActivityCustomers extends AppCompatActivity
         Intent Login = new Intent(MainActivityCustomers.this, CustomerLogin.class);
         startActivity(Login);
         finish();
+    }
+
+    private ArrayList<ImageModel> populateList(){
+
+        ArrayList<ImageModel> list = new ArrayList<>();
+
+        for(int i = 0; i < 9; i++){
+            ImageModel imageModel = new ImageModel();
+            imageModel.setName(myImageNameList[i]);
+            imageModel.setImage_drawable(myImageList[i]);
+            list.add(imageModel);
+        }
+
+        return list;
     }
 
 }
