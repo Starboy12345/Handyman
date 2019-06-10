@@ -1,5 +1,6 @@
 package com.example.handyman.adapters;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
+import com.example.handyman.RequestHandyManActivity;
 import com.example.handyman.models.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -17,7 +19,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapter.MechanicViewHolder> {
-
+    private Intent intent;
 
     /**
      * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
@@ -30,16 +32,29 @@ public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapt
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull MechanicViewHolder holder, int position, @NonNull User model) {
+    protected void onBindViewHolder(@NonNull MechanicViewHolder holder, int position, @NonNull final User model) {
         holder.showName(model.getFullName());
         holder.showOccupation(model.getOccupation());
         holder.showUserPhoto(model.getImage());
         holder.showUserPhoto(model.getMobileNumber());
-        holder.showNumber(model.getMobileNumber());
+        holder.showNumber(model.getAbout());
+
+        final String getAdapterPosition = getRef(position).getKey();
 
         holder.btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                intent = new Intent(v.getContext(), RequestHandyManActivity.class);
+                intent.putExtra("position", getAdapterPosition);
+                intent.putExtra("name", model.getFullName());
+                intent.putExtra("image", model.getImage());
+                intent.putExtra("occupation", model.getOccupation());
+                intent.putExtra("about", model.getAbout());
+
+                v.getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
 
             }
         });
@@ -109,7 +124,7 @@ public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapt
 
         //display the number
         void showNumber(String s) {
-            TextView name = view.findViewById(R.id.txtHandyManNumber);
+            TextView name = view.findViewById(R.id.txtHandyManAbout);
             name.setText(s);
         }
 

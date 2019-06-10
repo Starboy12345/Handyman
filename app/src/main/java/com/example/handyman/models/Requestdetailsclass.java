@@ -1,4 +1,4 @@
-package com.example.handyman;
+package com.example.handyman.models;
 
 public class Requestdetailsclass {
     private String UserId;
