@@ -21,9 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import javax.security.auth.callback.CallbackHandler;
-
-public class Login extends AppCompatActivity {
+public class CustomerLogin extends AppCompatActivity {
 
     private TextInputLayout UserEmail, UserPassword;
     private Button LoginButton;
@@ -108,11 +106,11 @@ public class Login extends AppCompatActivity {
                             if (task.isSuccessful())
                             {
                                 if (mAuth.getCurrentUser().isEmailVerified()){
-                                    startActivity(new Intent(Login.this, Main2Activity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
+                                    startActivity(new Intent(CustomerLogin.this, MainActivityCustomers.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
                                     finish();
                                     loadingbar.dismiss();
                                 }else{
-                                    new AlertDialog.Builder(Login.this)
+                                    new AlertDialog.Builder(CustomerLogin.this)
                                             .setMessage("Hello" + " " + email + " "
                                                     + " " + "\n" + "please check your email  " + "\n" +
                                                     "to continue")
@@ -131,7 +129,7 @@ public class Login extends AppCompatActivity {
                             } else
                             {
                                 String message = task.getException().getMessage();
-                                Toast.makeText(Login.this, "Error:" + "" + message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CustomerLogin.this, "Error:" + "" + message, Toast.LENGTH_SHORT).show();
                                 loadingbar.dismiss();
                             }
                         }
@@ -144,7 +142,7 @@ public class Login extends AppCompatActivity {
     private void SendUsertoRegisterActivity()
     {
         // send user to register activity
-        Intent registeruser = new Intent(Login.this, Chooseurregistertype.class);
+        Intent registeruser = new Intent(CustomerLogin.this, Chooseurregistertype.class);
         startActivity(registeruser);
     }
 }

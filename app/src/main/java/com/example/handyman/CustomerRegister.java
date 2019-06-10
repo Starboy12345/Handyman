@@ -15,9 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.handyman.models.User;
@@ -173,7 +171,7 @@ public class CustomerRegister extends AppCompatActivity {
 //
                                                                             dialog.dismiss();
 
-                                                                            startActivity(new Intent(CustomerRegister.this,Login.class));
+                                                                            startActivity(new Intent(CustomerRegister.this, CustomerLogin.class));
                                                                             finish();
 
 

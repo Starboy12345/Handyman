@@ -31,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Main2Activity extends AppCompatActivity
+public class MainActivityCustomers extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
@@ -118,7 +118,7 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            startActivity(new Intent(this, Main2Activity.class));
+            startActivity(new Intent(this, MainActivityCustomers.class));
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
             startActivity(new Intent(this, Handymantypes.class));
@@ -133,7 +133,7 @@ public class Main2Activity extends AppCompatActivity
 
         } else if (id==R.id.nav_logout)
         {
-            AlertDialog.Builder a_builder = new AlertDialog.Builder(Main2Activity.this);
+            AlertDialog.Builder a_builder = new AlertDialog.Builder(MainActivityCustomers.this);
             a_builder.setMessage("Do you really want to Logout")
                     .setCancelable(true)
                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -144,7 +144,7 @@ public class Main2Activity extends AppCompatActivity
                                 if (firebaseUser!=null)
                                 {
                                     mAuth.signOut();
-                                    Intent Login = new Intent(Main2Activity.this, WelcomeActivity.class);
+                                    Intent Login = new Intent(MainActivityCustomers.this, WelcomeActivity.class);
                                     Login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(Login);
                                     finish();
@@ -237,7 +237,7 @@ public class Main2Activity extends AppCompatActivity
     }
 
     private void SendUserToLoginActivity() {
-        Intent Login = new Intent(Main2Activity.this, Login.class);
+        Intent Login = new Intent(MainActivityCustomers.this, CustomerLogin.class);
         startActivity(Login);
         finish();
     }

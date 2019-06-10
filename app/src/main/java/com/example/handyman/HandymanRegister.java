@@ -178,7 +178,7 @@ public class HandymanRegister extends AppCompatActivity {
 //
                                                                             dialog.dismiss();
 
-                                                                            startActivity(new Intent(HandymanRegister.this,Login.class));
+                                                                            startActivity(new Intent(HandymanRegister.this, CustomerLogin.class));
                                                                             finish();
 
 
