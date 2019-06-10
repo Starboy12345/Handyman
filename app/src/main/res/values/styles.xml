@@ -17,6 +17,14 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!-- theme for tool bar. -->
+
+    <!--global animation effect for all activities-->
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slideinright</item>
+        <item name="android:activityOpenExitAnimation">@anim/slideoutleft</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slideinleft</item>
+        <item name="android:activityCloseExitAnimation">@anim/slideoutright</item>
+    </style>
+
 
 </resources>
