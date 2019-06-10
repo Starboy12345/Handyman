@@ -142,7 +142,7 @@ public class CustomerLogin extends AppCompatActivity {
     private void SendUsertoRegisterActivity()
     {
         // send user to register activity
-        Intent registeruser = new Intent(CustomerLogin.this, Chooseurregistertype.class);
+        Intent registeruser = new Intent(CustomerLogin.this, CustomerRegister.class);
         startActivity(registeruser);
     }
 }

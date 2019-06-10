@@ -19,22 +19,19 @@ public class WelcomeActivity extends AppCompatActivity {
         btncustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
-                startActivity(new Intent(WelcomeActivity.this, CustomerLogin.class));
-=======
-                startActivity(new Intent(WelcomeActivity.this,Login.class));
->>>>>>> 9acbdc8... first commit
+  startActivity(new Intent(WelcomeActivity.this, CustomerLogin.class));
+
+
             }
         });
 
         btnhandyman.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
-                startActivity(new Intent(WelcomeActivity.this, CustomerLogin.class));
-=======
-                startActivity(new Intent(WelcomeActivity.this, Login.class));
->>>>>>> 9acbdc8... first commit
+
+   startActivity(new Intent(WelcomeActivity.this, HandyManLogin.class));
+
+                ;
             }
         });
 

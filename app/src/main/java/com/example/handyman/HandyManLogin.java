@@ -141,7 +141,7 @@ public class HandyManLogin extends AppCompatActivity {
     private void SendUsertoRegisterActivity()
     {
         // send user to register activity
-        Intent registeruser = new Intent(HandyManLogin.this, Chooseurregistertype.class);
+        Intent registeruser = new Intent(HandyManLogin.this, HandymanRegister.class);
         startActivity(registeruser);
     }
 }

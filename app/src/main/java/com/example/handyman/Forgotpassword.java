@@ -53,11 +53,10 @@ public class Forgotpassword extends AppCompatActivity {
                             if (task.isSuccessful())
                             {
                                 Toast.makeText(Forgotpassword.this, "Please Check Your Email address", Toast.LENGTH_SHORT).show();
-<<<<<<< HEAD
-                                startActivity(new Intent(Forgotpassword.this, CustomerLogin.class));
-=======
-                                startActivity(new Intent(Forgotpassword.this, Login.class));
->>>>>>> 9acbdc8... first commit
+
+      startActivity(new Intent(Forgotpassword.this, WelcomeActivity.class));
+
+
 
                             }
                             else
