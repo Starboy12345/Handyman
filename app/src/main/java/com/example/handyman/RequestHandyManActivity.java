@@ -25,7 +25,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     private CircleImageView mPhoto;
     private EditText edtAbt, edtReason;
     private Button btnRequest,btnStartDate;
-    private String uid, getName, getAbt, getOccupation,  getPhoto, adapterPosition;
+    private String uid,getLocation, getName, getAbt, getOccupation,  getPhoto, adapterPosition;
     private Intent intent;
     ProgressDialog loading;
     private String dayOfTheWeek;
@@ -42,8 +42,8 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
 
     private void initListener() {
-        btnRequest.setOnClickListener(this);
-        btnStartDate.setOnClickListener(this);
+      //  btnRequest.setOnClickListener(this);
+//        btnStartDate.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -65,13 +65,16 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         edtAbt = findViewById(R.id.edtAbt);
         txtDate = findViewById(R.id.edtDate);
         edtReason = findViewById(R.id.edtReason);
+        btnRequest = findViewById(R.id.btnRequest);
+        btnStartDate = findViewById(R.id.btnStartDate);
 
         if (intent != null) {
             adapterPosition = intent.getStringExtra("position");
             getName = intent.getStringExtra("name");
             getAbt = intent.getStringExtra("about");
             getOccupation = intent.getStringExtra("occupation");
-            getPhoto = intent.getStringExtra("photo");
+            getPhoto = intent.getStringExtra("image");
+            getLocation = intent.getStringExtra("location");
 
             txtName.setText(getName);
             txtOccupation.setText(getOccupation);

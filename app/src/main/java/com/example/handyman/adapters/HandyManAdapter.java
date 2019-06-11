@@ -36,8 +36,9 @@ public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapt
         holder.showName(model.getFullName());
         holder.showOccupation(model.getOccupation());
         holder.showUserPhoto(model.getImage());
-        holder.showUserPhoto(model.getMobileNumber());
-        holder.showNumber(model.getAbout());
+        holder.showNumber(model.getMobileNumber());
+        holder.showDetails(model.getDetails());
+        holder.showLocation(model.getLocation());
 
         final String getAdapterPosition = getRef(position).getKey();
 
@@ -52,6 +53,7 @@ public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapt
                 intent.putExtra("image", model.getImage());
                 intent.putExtra("occupation", model.getOccupation());
                 intent.putExtra("about", model.getAbout());
+                intent.putExtra("location", model.getLocation());
 
                 v.getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
@@ -97,9 +99,9 @@ public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapt
 
         //display the user photo
         void showUserPhoto(String urlOfImage) {
-            CircleImageView checkInPhoto = view.findViewById(R.id.imgViewHandyMan);
+            CircleImageView profile = view.findViewById(R.id.imgViewHandyMan);
 
-            Glide.with(view).load(urlOfImage).into(checkInPhoto);
+            Glide.with(view).load(urlOfImage).into(profile);
         }
 
 
@@ -113,6 +115,13 @@ public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapt
         void showOccupation(String s) {
             TextView occ = view.findViewById(R.id.txtOccupationOfHandyMan);
             occ.setText(s);
+        }
+
+
+        //display the details
+        void showDetails(String s) {
+            TextView loc = view.findViewById(R.id.txtHandyManAbout);
+            loc.setText(s);
         }
 
 

@@ -1,4 +1,4 @@
-package com.example.handyman;
+package com.example.handyman.activities;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -6,34 +6,32 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
+import com.example.handyman.R;
 import com.example.handyman.adapters.HandyManAdapter;
 import com.example.handyman.models.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ActivityMechanicList extends AppCompatActivity {
-
+public class PlumberListActivity extends AppCompatActivity {
     HandyManAdapter adapter;
-    private DatabaseReference mechanicDbRef;
-    private static final String TAG = "ActivityMechanicList";
+    private DatabaseReference plumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mechanic);
+        setContentView(R.layout.activity_plumber_list);
 
-        mechanicDbRef = FirebaseDatabase.getInstance().getReference().child("HandyMen").child("Mechanic");
+        plumber = FirebaseDatabase.getInstance().getReference().child("HandyMen").child("Mechanic");
+        plumber.keepSynced(true);
         setUpRecycler();
     }
 
 
 
     private void setUpRecycler() {
-        Log.d(TAG, "setUpRecycler: completed");
-        final RecyclerView recyclerView = findViewById(R.id.recyclerViewMechanic);
+        final RecyclerView recyclerView = findViewById(R.id.recyclerViewPlumber);
         recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -44,7 +42,7 @@ public class ActivityMechanicList extends AppCompatActivity {
         //now set the drawable of the item decorator
         try {
             itemDecoration.setDrawable(
-                    ContextCompat.getDrawable(ActivityMechanicList.this, R.drawable.recycler_divider)
+                    ContextCompat.getDrawable(PlumberListActivity.this, R.drawable.recycler_divider)
             );
 
         } catch (Exception e) {
@@ -55,7 +53,7 @@ public class ActivityMechanicList extends AppCompatActivity {
 
 
         FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>().
-                setQuery(mechanicDbRef, User.class).build();
+                setQuery(plumber, User.class).build();
 
         adapter = new HandyManAdapter(options);
 

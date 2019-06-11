@@ -3,6 +3,8 @@ package com.example.handyman;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -20,7 +22,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.handyman.models.User;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,20 +32,37 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 public class HandymanRegister extends AppCompatActivity {
 
     private Spinner spinner1;
+    private Uri resultUri;
+    private String getImageUri = "";
+    private StorageReference mStorageReferenceForPhoto;
     String spinnercode;
     private TextInputLayout UserFullname, UserEmail, UserPassword, UserVPassword, UserNumber;
     private Button createaccountbutton;
     private FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
+    private final String urlShortNer = "https://bit.ly/2I6aStr";
     private ProgressDialog loadingbar;
     private DatabaseReference handyMenDbRef;
     String CurrentUserid, email, password,confirmpassword,number,occupation, fullname;
     private static final String TAG = "Register";
     private Vibrator vibrator;
+    CircleImageView imgProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +71,8 @@ public class HandymanRegister extends AppCompatActivity {
 
 
         mAuth = FirebaseAuth.getInstance();
+        mStorageReferenceForPhoto = FirebaseStorage.getInstance().getReference().child(
+                "userPhotos");
 //vibration
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         handyMenDbRef = FirebaseDatabase.getInstance().getReference("HandyMen");
@@ -60,6 +83,8 @@ public class HandymanRegister extends AppCompatActivity {
         UserVPassword = findViewById(R.id.TxtConfirmPasswordSignup);
         createaccountbutton = findViewById(R.id.btnregisterSignup);
         loadingbar = new ProgressDialog(this);
+        imgProfile = findViewById(R.id.imgProfile);
+
         //spinner code
         spinner1 =  findViewById(R.id.spinner1);
         // addListenerOnButton();
@@ -68,7 +93,22 @@ public class HandymanRegister extends AppCompatActivity {
         createaccountbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createnewaccount();
+                if (resultUri != null) {
+
+                    createnewaccount();
+                } else {
+
+                    new AlertDialog.Builder(HandymanRegister.this)
+                            .setTitle("Warning")
+                            .setMessage("Must add a photo ")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
+
+                }
 
             }
         });
@@ -143,57 +183,122 @@ public class HandymanRegister extends AppCompatActivity {
                             CurrentUserid = firebaseUser.getUid();
 
                             //class created within the files
-                            final User user = new User(CurrentUserid, email, number, fullname,occupation);
+                            final User user = new User(CurrentUserid, email, number, fullname,occupation,urlShortNer,"No details");
 
                             firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful())
                                     {
+                                        //thumb file
+                                        final File thumb_imageFile = new File(resultUri.getPath());
 
-                                        handyMenDbRef.child(occupation).child(CurrentUserid).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        //  compress image file to bitmap surrounding with try catch
+                                        byte[] thumbBytes = new byte[0];
+                                        try {
+                                            Bitmap thumb_imageBitmap =
+                                                    new Compressor(HandymanRegister.this)
+                                                            .setQuality(100)
+                                                            .compressToBitmap(thumb_imageFile);
+
+                                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                            thumb_imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                                            thumbBytes = byteArrayOutputStream.toByteArray();
+
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        //                file path for the image
+                                        final StorageReference fileReference =
+                                                mStorageReferenceForPhoto.child(CurrentUserid + "." + resultUri.getLastPathSegment());
+                                        fileReference.putFile(resultUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                                             @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
+                                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                                if (!task.isSuccessful()) {
+                                                    //throw task.getException();
+                                                    Log.d(TAG, "then: " + task.getException().getMessage());
 
-                                                if (task.isSuccessful())
-                                                {
-                                                    loadingbar.dismiss();
-                                                    //vibrates to alert success for android M and above
-                                                    if (Build.VERSION.SDK_INT >= 26) {
-                                                        vibrator.vibrate(VibrationEffect.createOneShot
-                                                                (2000, VibrationEffect.DEFAULT_AMPLITUDE));
-                                                    } else {
-                                                        //vibrate below android M
-                                                        vibrator.vibrate(2000);
-
-                                                    }
-                                                    new AlertDialog.Builder(HandymanRegister.this)
-                                                            .setMessage("Hello" + " " + fullname + " " + "\n" + "an email verification link has been sent to " + email + "\n" +
-                                                                    "please verify to continue")
-                                                            .setPositiveButton("OK",
-                                                                    new DialogInterface.OnClickListener
-                                                                            () {
-                                                                        @Override
-                                                                        public void onClick(DialogInterface dialog, int which) {
-//
-                                                                            dialog.dismiss();
-
-                                                                            startActivity(new Intent(HandymanRegister.this, CustomerLogin.class));
-                                                                            finish();
-
-
-                                                                        }
-                                                                    })
-                                                            .create()
-                                                            .show();
-
-                                                } else {
-                                                    loadingbar.dismiss();
-                                                    Log.d(TAG, "onComplete: " + task.getException().getMessage());
                                                 }
+                                                return fileReference.getDownloadUrl();
+                                            }
+
+                                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Uri> task) {
+
+                                                if (task.isSuccessful()){
+                                                    Uri downLoadUri = task.getResult();
+                                                    assert downLoadUri != null;
+                                                    getImageUri = downLoadUri.toString();
+
+//class created within the files
+                                                    final User user =
+                                                            new User(CurrentUserid, email, number, fullname,occupation,getImageUri);
+                                                    handyMenDbRef.child(occupation).child(CurrentUserid).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                                            if (task.isSuccessful())
+                                                            {
+                                                                loadingbar.dismiss();
+                                                                //vibrates to alert success for android M and above
+                                                                if (Build.VERSION.SDK_INT >= 26) {
+                                                                    vibrator.vibrate(VibrationEffect.createOneShot
+                                                                            (2000, VibrationEffect.DEFAULT_AMPLITUDE));
+                                                                } else {
+                                                                    //vibrate below android M
+                                                                    vibrator.vibrate(2000);
+
+                                                                }
+                                                                new AlertDialog.Builder(HandymanRegister.this)
+                                                                        .setMessage("Hello" + " " + fullname + " " + "\n" + "an email verification link has been sent to " + email + "\n" +
+                                                                                "please verify to continue")
+                                                                        .setPositiveButton("OK",
+                                                                                new DialogInterface.OnClickListener
+                                                                                        () {
+                                                                                    @Override
+                                                                                    public void onClick(DialogInterface dialog, int which) {
+//
+                                                                                        dialog.dismiss();
+
+                                                                                        startActivity(new Intent(HandymanRegister.this, CustomerLogin.class));
+                                                                                        finish();
+
+
+                                                                                    }
+                                                                                })
+                                                                        .create()
+                                                                        .show();
+
+                                                            } else {
+                                                                loadingbar.dismiss();
+                                                                Log.d(TAG, "onComplete: " + task.getException().getMessage());
+                                                            }
+
+                                                        }
+                                                    });
+
+
+
+
+                                                }
+
+
+
+
 
                                             }
                                         });
+
+
+
+
+
+
+
+
+
 
 
                                     } else {
@@ -225,6 +330,45 @@ public class HandymanRegister extends AppCompatActivity {
 
         }
 
+
+
+    }
+
+    public void selectPhoto(View view) {
+
+        openGallery();
+
+    }
+
+
+    private void openGallery() {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(HandymanRegister.this);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+                assert result != null;
+                resultUri = result.getUri();
+                //  userImage.setImageURI(uri);
+
+                Glide.with(HandymanRegister.this).load(resultUri).into(imgProfile);
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                loadingbar.dismiss();
+                assert result != null;
+                String error = result.getError().getMessage();
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            }
+        }
 
 
     }

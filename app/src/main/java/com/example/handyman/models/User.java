@@ -14,12 +14,23 @@ public class User {
     public User() {
     }
 
-    public User(String userId, String email, String mobileNumber, String fullName, String occupation) {
+    public User(String userId, String email, String mobileNumber, String fullName, String occupation,String image) {
+        this.image = image;
         UserId = userId;
         this.email = email;
         this.mobileNumber = mobileNumber;
         this.fullName = fullName;
         this.occupation = occupation;
+    }
+
+    public User(String userId, String email, String mobileNumber, String fullName, String occupation, String image, String details) {
+        UserId = userId;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.fullName = fullName;
+        this.occupation = occupation;
+        this.image = image;
+        this.details = details;
     }
 
     public String getImage() {
@@ -46,14 +57,7 @@ public class User {
         this.details = details;
     }
 
-    public User(String userId, String email, String mobileNumber, String fullName, String occupation, String about) {
-        UserId = userId;
-        this.email = email;
-        this.mobileNumber = mobileNumber;
-        this.fullName = fullName;
-        this.occupation = occupation;
-        this.about = about;
-    }
+
 
 
     public String getAbout() {
