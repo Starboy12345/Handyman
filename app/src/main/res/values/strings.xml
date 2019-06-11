@@ -19,6 +19,7 @@
     <string name="profession_prompt">Choose your profession </string>
     <string name="view">View</string>
     <string name="you_requested_a_job_to_be_done">Job Requested</string>
+    <string name="delete">Delete</string>
 
 
     <string-array name="plate_initials">

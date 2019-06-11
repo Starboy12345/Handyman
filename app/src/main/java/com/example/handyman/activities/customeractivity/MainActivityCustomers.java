@@ -22,11 +22,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.handyman.EditProfile;
 import com.example.handyman.R;
-import com.example.handyman.activities.WelcomeActivity;
 import com.example.handyman.activities.handymanactivity.ActivityMechanicList;
+import com.example.handyman.activities.handymanactivity.CarpenterActivity;
 import com.example.handyman.activities.handymanactivity.GardenerListActivity;
+import com.example.handyman.activities.handymanactivity.PainterActivity;
+import com.example.handyman.activities.handymanactivity.PestControlListActivity;
 import com.example.handyman.activities.handymanactivity.PlumberListActivity;
 import com.example.handyman.activities.handymanactivity.RollerListActivity;
+import com.example.handyman.activities.handymanactivity.TilerListActivity;
+import com.example.handyman.activities.handymanactivity.TvInstallerActivity;
 import com.example.handyman.models.GridBaseAdapter;
 import com.example.handyman.models.ImageModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -110,6 +114,27 @@ public class MainActivityCustomers extends AppCompatActivity
                     startActivity(new Intent(MainActivityCustomers.this, RollerListActivity.class));
                     //  finish();
                 }
+                if (position == 4) {
+                    startActivity(new Intent(MainActivityCustomers.this, PestControlListActivity.class));
+                //  finish();
+            }
+                if (position == 5) {
+                    startActivity(new Intent(MainActivityCustomers.this, TilerListActivity.class));
+                    //  finish();
+                }
+                if (position == 6) {
+                    startActivity(new Intent(MainActivityCustomers.this, TvInstallerActivity.class));
+                    //  finish();
+                }
+
+                if (position == 7) {
+                    startActivity(new Intent(MainActivityCustomers.this, CarpenterActivity.class));
+                    //  finish();
+                }
+                if (position == 8) {
+                    startActivity(new Intent(MainActivityCustomers.this, PainterActivity.class));
+                    //  finish();
+                }
 
 
             }
@@ -188,7 +213,7 @@ public class MainActivityCustomers extends AppCompatActivity
                             try {
                                 if (firebaseUser != null) {
                                     mAuth.signOut();
-                                    Intent Login = new Intent(MainActivityCustomers.this, WelcomeActivity.class);
+                                    Intent Login = new Intent(MainActivityCustomers.this, CustomerLogin.class);
                                     Login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(Login);
                                     finish();
@@ -278,7 +303,7 @@ public class MainActivityCustomers extends AppCompatActivity
     }
 
     private void SendUserToLoginActivity() {
-        Intent Login = new Intent(MainActivityCustomers.this, CustomerLogin.class);
+        Intent Login = new Intent(MainActivityCustomers.this, SplashScreenActivity.class);
         startActivity(Login);
         finish();
     }

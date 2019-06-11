@@ -3,12 +3,14 @@ package com.example.handyman.adapters;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -75,12 +77,15 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<RequestHandyMan
     public class HandyManRequest extends RecyclerView.ViewHolder {
         private View view;
         private Button btnView;
-
+        public ConstraintLayout viewForeground;
+        RelativeLayout viewBackground;
 
         HandyManRequest(@NonNull View itemView) {
             super(itemView);
             view = itemView;
             btnView = view.findViewById(R.id.btnView);
+            viewBackground = view.findViewById(R.id.view_background);
+            viewForeground = view.findViewById(R.id.view_foreground);
         }
 
 

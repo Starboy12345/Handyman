@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
 import com.example.handyman.adapters.CustomerRequestSent;
+import com.example.handyman.interfaces.RecyclerItemTouchHelperDeleteRequest;
 import com.example.handyman.models.RequestHandyMan;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,11 +49,11 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RequestHandyManActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView txtName, txtOccupation, txtDate, edtAbt;
+public class RequestHandyManActivity extends AppCompatActivity implements View.OnClickListener, RecyclerItemTouchHelperDeleteRequest.RecyclerItemTouchHelperDeleteListenerRequest {
+    private TextView txtName, txtOccupation, edtAbt;
     private static final String TAG = "RequestHandyManActivity";
     private CircleImageView mPhoto;
-    private EditText edtReason;
+    private EditText edtReason,txtDate;
     private Button btnRequest, btnStartDate;
     private String uid, getHandyManId, getLocation, getName, getAbt, getOccupation, getPhoto, adapterPosition;
     private Intent intent;
@@ -70,6 +72,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     private String notApproved = "Not yet Approved";
     CustomerRequestSent adapter;
     private DatabaseReference mRequests;
+    RecyclerView recyclerView;
 
 
     @Override
@@ -90,7 +93,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     }
 
     private void setUpRecycler() {
-        final RecyclerView recyclerView = findViewById(R.id.recyclerRequestResponse);
+      recyclerView = findViewById(R.id.recyclerRequestResponse);
         recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -124,6 +127,45 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         recyclerView.setAdapter(adapter);
         //notify data change
         adapter.notifyDataSetChanged();
+
+        // adding item touch helper
+        // only ItemTouchHelper.LEFT added to detect Right to Left swipe
+        // if you want both Right -> Left and Left -> Right
+        // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelperDeleteRequest(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
+        //swipe to delete
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback1 =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+                    }
+
+
+                };
+
+        // attaching the touch helper to recycler view
+        new ItemTouchHelper(itemTouchHelperCallback1).attachToRecyclerView(recyclerView);
+
+
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        deleteItem(viewHolder.getAdapterPosition());
+    }
+
+    //Method to delete value in recycler
+    private void deleteItem(int adapterPosition) {
+        adapter.getSnapshots().getSnapshot(adapterPosition).getRef().removeValue();
+
 
     }
 
@@ -276,7 +318,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
     //if date selected is before the current date ... display error
     void displayErrorOnStartDateSelected() {
-        txtDate.setText("Please select a day after today");
+        txtDate.setError("Please select a day after today");
         txtDate.setTextColor(getResources().getColor(R.color.colorRed));
         btnRequest.setEnabled(false);
 
@@ -298,7 +340,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     private void sendRequestToHandyMan() {
         final String getReason = edtReason.getText().toString();
 
-        if (!edtReason.getText().toString().isEmpty()) {
+        if (!edtReason.getText().toString().isEmpty() && !txtDate.getText().toString().isEmpty()) {
             btnRequest.setEnabled(true);
             loading.setMessage("Making the request please wait");
             loading.show();
@@ -350,6 +392,10 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
             makeToast("Please state your reason");
             btnRequest.setEnabled(false);
         }
+        else if (txtDate.getText().toString().isEmpty()) {
+            makeToast("Please select your start date");
+            btnRequest.setEnabled(false);
+        }
 
 
     }
@@ -366,4 +412,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         super.onStop();
         adapter.stopListening();
     }
+
+
+
 }

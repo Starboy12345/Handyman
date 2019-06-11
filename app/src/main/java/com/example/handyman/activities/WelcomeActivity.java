@@ -3,10 +3,8 @@ package com.example.handyman.activities;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -15,7 +13,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -75,8 +72,7 @@ public class WelcomeActivity extends AppCompatActivity {
     };
 
 
-
-    Button btncustomer,btnhandyman;
+    Button btncustomer, btnhandyman;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +82,13 @@ public class WelcomeActivity extends AppCompatActivity {
         checkPermissions();//Check Permission
 
         setContentView(R.layout.activity_welcome);
-        btncustomer=findViewById(R.id.btncustomerlogin);
-        btnhandyman=findViewById(R.id.btnhandyman);
+        btncustomer = findViewById(R.id.btncustomerlogin);
+        btnhandyman = findViewById(R.id.btnhandyman);
 
         btncustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-  startActivity(new Intent(WelcomeActivity.this, CustomerLogin.class));
+                startActivity(new Intent(WelcomeActivity.this, CustomerLogin.class));
 
 
             }
@@ -102,9 +98,9 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-   startActivity(new Intent(WelcomeActivity.this, HandyManLogin.class));
+                startActivity(new Intent(WelcomeActivity.this, HandyManLogin.class));
 
-                ;
+
             }
         });
 
@@ -121,35 +117,6 @@ public class WelcomeActivity extends AppCompatActivity {
         mGoogleApiClient.connect();
     }
 
-    private void showWarningDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                builder.setTitle("Warning")
-                        .setMessage("Make sure you are connected to your organisations\'s WiFi before you check in or check out.\nIf not please go back and connect")
-                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-
-                builder.create();
-                builder.show();
-
-
-            }
-        }, 3000);
-
-
-        SharedPreferences prefs = this.getSharedPreferences("loader", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("firstStart", false);
-        editor.apply();
-
-    }
 
     /* Check Location Permission for Marshmallow Devices */
     private void checkPermissions() {
