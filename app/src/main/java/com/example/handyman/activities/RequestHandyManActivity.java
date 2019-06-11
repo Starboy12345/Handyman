@@ -3,11 +3,10 @@ package com.example.handyman.activities;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,10 +21,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
-import com.example.handyman.adapters.HandyManRequestReceived;
-import com.example.handyman.adapters.HandyManTypesAdapter;
+import com.example.handyman.adapters.CustomerRequestSent;
 import com.example.handyman.models.RequestHandyMan;
-import com.example.handyman.models.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,7 +53,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     private CircleImageView mPhoto;
     private EditText edtReason;
     private Button btnRequest, btnStartDate;
-    private String uid, getLocation, getName, getAbt, getOccupation, getPhoto, adapterPosition;
+    private String uid, getHandyManId, getLocation, getName, getAbt, getOccupation, getPhoto, adapterPosition;
     private Intent intent;
     ProgressDialog loading;
     private String dayOfTheWeek, startDateSelected, ownName, ownerPhoto;
@@ -71,9 +68,8 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     SimpleDateFormat sfd;
     private DatabaseReference UserRef, requestDbRef;
     private String notApproved = "Not yet Approved";
-    HandyManRequestReceived adapter;
+    CustomerRequestSent adapter;
     private DatabaseReference mRequests;
-
 
 
     @Override
@@ -86,7 +82,6 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
                 Locale.US);
         mRequests = FirebaseDatabase.getInstance().getReference().child("Requests");
         mRequests.keepSynced(true);
-
 
 
         initViews();
@@ -114,13 +109,13 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         }
 
 
-        Query query = mRequests.orderByChild()
+        Query query = mRequests.orderByChild("senderUserId").equalTo(uid);
 
 
         FirebaseRecyclerOptions<RequestHandyMan> options = new FirebaseRecyclerOptions.Builder<RequestHandyMan>().
-                setQuery(mRequests, RequestHandyMan.class).build();
+                setQuery(query, RequestHandyMan.class).build();
 
-        adapter = new HandyManRequestReceived(options);
+        adapter = new CustomerRequestSent(options);
 
 
         //add decorator
@@ -157,6 +152,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
             getOccupation = intent.getStringExtra("occupation");
             getPhoto = intent.getStringExtra("image");
             getLocation = intent.getStringExtra("location");
+            getHandyManId = intent.getStringExtra("handyManId");
 
             txtName.setText(getName);
             txtOccupation.setText(getOccupation);
@@ -293,11 +289,10 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     }
 
 
-    void clear(){
-txtDate.setText("");
-edtReason.setText("");
+    void clear() {
+        txtDate.setText("");
+        edtReason.setText("");
     }
-
 
 
     private void sendRequestToHandyMan() {
@@ -314,7 +309,8 @@ edtReason.setText("");
 
 
                     Map<String, Object> requestSent = new HashMap<>();
-                    requestSent.put("userId", uid);
+                    requestSent.put("senderUserId", uid);
+                    requestSent.put("handyManId", getHandyManId);
                     requestSent.put("ownerName", ownName);
                     requestSent.put("ownerImage", ownerPhoto);
                     requestSent.put("date", ServerValue.TIMESTAMP);
@@ -356,13 +352,18 @@ edtReason.setText("");
         }
 
 
-
-
-
-
-
-
-
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
 }

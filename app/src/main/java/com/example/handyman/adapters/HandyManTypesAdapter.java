@@ -55,6 +55,7 @@ public class HandyManTypesAdapter extends FirebaseRecyclerAdapter<User, HandyMan
                 intent.putExtra("occupation", model.getOccupation());
                 intent.putExtra("details", model.getDetails());
                 intent.putExtra("location", model.getLocation());
+                intent.putExtra("handyManId", model.getUserId());
 
                 v.getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 

@@ -22,7 +22,7 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHandyMan, HandyManRequestReceived.HandyManRequest> {
+public class CustomerRequestSent extends FirebaseRecyclerAdapter<RequestHandyMan, CustomerRequestSent.HandyManRequest> {
     private Intent intent;
 
     /**
@@ -31,12 +31,12 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
      *
      * @param options
      */
-    public HandyManRequestReceived(@NonNull FirebaseRecyclerOptions<RequestHandyMan> options) {
+    public CustomerRequestSent(@NonNull FirebaseRecyclerOptions<RequestHandyMan> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull HandyManRequestReceived.HandyManRequest holder, int position, @NonNull final RequestHandyMan model) {
+    protected void onBindViewHolder(@NonNull HandyManRequest holder, int position, @NonNull final RequestHandyMan model) {
         holder.showName(model.getOwnerName());
         holder.showUserPhoto(model.getOwnerImage());
         holder.showResponse(model.getResponse());
@@ -65,8 +65,8 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
 
     @NonNull
     @Override
-    public HandyManRequestReceived.HandyManRequest onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new HandyManRequestReceived.HandyManRequest((LayoutInflater.from(viewGroup.getContext())
+    public HandyManRequest onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        return new HandyManRequest((LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.layout_handyman_request_received, viewGroup, false)));
     }
 
