@@ -18,16 +18,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.EditProfile;
 import com.example.handyman.R;
-import com.example.handyman.activities.GardenerListActivity;
-import com.example.handyman.activities.PlumberListActivity;
-import com.example.handyman.activities.RollerListActivity;
 import com.example.handyman.activities.WelcomeActivity;
-import com.example.handyman.activities.ActivityMechanicList;
+import com.example.handyman.activities.handymanactivity.ActivityMechanicList;
+import com.example.handyman.activities.handymanactivity.GardenerListActivity;
+import com.example.handyman.activities.handymanactivity.PlumberListActivity;
+import com.example.handyman.activities.handymanactivity.RollerListActivity;
 import com.example.handyman.models.GridBaseAdapter;
 import com.example.handyman.models.ImageModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,13 +57,13 @@ public class MainActivityCustomers extends AppCompatActivity
     private ArrayList<ImageModel> imageModelArrayList;
 
     private int[] myImageList = new int[]{R.drawable.mechanic, R.drawable.gardener,
-            R.drawable.plumber,R.drawable.roller,R.drawable.pest, R.drawable.tiler
+            R.drawable.plumber, R.drawable.roller, R.drawable.pest, R.drawable.tiler
             , R.drawable.tv, R.drawable.carpenter,
-             R.drawable.paint, };
-    private String[] myImageNameList = new String[]{"Mechanic","Gardener",
-            "Plumber","Roller","Pest Control", "Tiler"
+            R.drawable.paint,};
+    private String[] myImageNameList = new String[]{"Mechanic", "Gardener",
+            "Plumber", "Roller", "Pest Control", "Tiler"
             , "TV Installation", "Carpenter",
-             "Painter", };
+            "Painter",};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,23 +92,23 @@ public class MainActivityCustomers extends AppCompatActivity
         gvGallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               // Toast.makeText(MainActivityCustomers.this, myImageNameList[position] + " Clicked", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(MainActivityCustomers.this, myImageNameList[position] + " Clicked", Toast.LENGTH_SHORT).show();
 
                 if (position == 0) {
                     startActivity(new Intent(MainActivityCustomers.this, ActivityMechanicList.class));
-                  //  finish();
+                    //  finish();
                 }
                 if (position == 1) {
                     startActivity(new Intent(MainActivityCustomers.this, GardenerListActivity.class));
-                 //   finish();
+                    //   finish();
                 }
                 if (position == 2) {
                     startActivity(new Intent(MainActivityCustomers.this, PlumberListActivity.class));
-                   // finish();
+                    // finish();
                 }
                 if (position == 3) {
                     startActivity(new Intent(MainActivityCustomers.this, RollerListActivity.class));
-                  //  finish();
+                    //  finish();
                 }
 
 

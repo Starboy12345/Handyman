@@ -8,6 +8,10 @@
     <uses-permission android:name="android.Manifest.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".HandyMan"
@@ -18,10 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.handymanactivity.AcceptOrRejectActivity"></activity>
-        <activity android:name=".activities.RollerListActivity" />
-        <activity android:name=".activities.PlumberListActivity" />
-        <activity android:name=".activities.GardenerListActivity" />
-        <activity android:name=".activities.RequestHandyManActivity" />
+
         <activity android:name=".activities.handymanactivity.HandyManLogin" />
         <activity android:name=".activities.handymanactivity.MainActivityHandyMen" />
         <activity android:name=".models.Listofrequest" />
@@ -33,20 +34,30 @@
         <activity
             android:name=".activities.customeractivity.MainActivityCustomers"
             android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.customeractivity.CustomerRegister" />
-        <activity android:name=".activities.WelcomeActivity">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.customeractivity.CustomerRegister" />
+        <activity android:name=".activities.WelcomeActivity">
+
+        </activity>
         <activity android:name=".activities.customeractivity.CustomerLogin" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".activities.ActivityMechanicList" />
+        <activity android:name=".activities.handymanactivity.TvInstallerActivity" />
+        <activity android:name=".activities.handymanactivity.TilerListActivity" />
+        <activity android:name=".activities.handymanactivity.RollerListActivity" />
+        <activity android:name=".activities.handymanactivity.PlumberListActivity" />
+        <activity android:name=".activities.handymanactivity.PestControlListActivity" />
+        <activity android:name=".activities.handymanactivity.ActivityMechanicList" />
+        <activity android:name=".activities.handymanactivity.PainterActivity" />
+        <activity android:name=".activities.handymanactivity.CarpenterActivity" />
+        <activity android:name=".activities.handymanactivity.GardenerListActivity" />
     </application>
 
 </manifest>
