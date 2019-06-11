@@ -39,6 +39,7 @@ public class HandyManTypesAdapter extends FirebaseRecyclerAdapter<User, HandyMan
         holder.showNumber(model.getMobileNumber());
         holder.showDetails(model.getDetails());
         holder.showLocation(model.getLocation());
+        holder.hiddenId(model.getUserId());
 
         final String getAdapterPosition = getRef(position).getKey();
 
@@ -109,6 +110,12 @@ public class HandyManTypesAdapter extends FirebaseRecyclerAdapter<User, HandyMan
         void showName(String s) {
             TextView name = view.findViewById(R.id.txtNameOfHandyMan);
             name.setText(s);
+        }
+
+        //hidden id
+        void hiddenId(String s) {
+            TextView id = view.findViewById(R.id.txtHandyManId);
+            id.setText(s);
         }
 
         //display the occupation

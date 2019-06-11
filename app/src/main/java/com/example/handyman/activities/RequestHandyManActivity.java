@@ -5,8 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -18,6 +22,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
+import com.example.handyman.adapters.HandyManRequestReceived;
+import com.example.handyman.adapters.HandyManTypesAdapter;
+import com.example.handyman.models.RequestHandyMan;
+import com.example.handyman.models.User;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +36,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
@@ -61,6 +71,10 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     SimpleDateFormat sfd;
     private DatabaseReference UserRef, requestDbRef;
     private String notApproved = "Not yet Approved";
+    HandyManRequestReceived adapter;
+    private DatabaseReference mRequests;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +84,53 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         date = calendar.getTime();
         sfd = new SimpleDateFormat("EEE dd-MMMM-yyyy ",
                 Locale.US);
-
+        mRequests = FirebaseDatabase.getInstance().getReference().child("Requests");
+        mRequests.keepSynced(true);
 
 
 
         initViews();
         initListener();
+        setUpRecycler();
     }
 
+    private void setUpRecycler() {
+        final RecyclerView recyclerView = findViewById(R.id.recyclerRequestResponse);
+        recyclerView.setVisibility(View.VISIBLE);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+
+        //now set the drawable of the item decorator
+        try {
+            itemDecoration.setDrawable(
+                    ContextCompat.getDrawable(RequestHandyManActivity.this, R.drawable.recycler_divider)
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        Query query = mRequests.orderByChild()
+
+
+        FirebaseRecyclerOptions<RequestHandyMan> options = new FirebaseRecyclerOptions.Builder<RequestHandyMan>().
+                setQuery(mRequests, RequestHandyMan.class).build();
+
+        adapter = new HandyManRequestReceived(options);
+
+
+        //add decorator
+        recyclerView.addItemDecoration(itemDecoration);
+        //attach adapter to recycler view
+        recyclerView.setAdapter(adapter);
+        //notify data change
+        adapter.notifyDataSetChanged();
+
+    }
 
 
     private void initListener() {
@@ -124,7 +177,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         }
         assert mFirebaseUser != null;
         uid = mFirebaseUser.getUid();
-        requestDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(adapterPosition);
+        requestDbRef = FirebaseDatabase.getInstance().getReference("Requests");
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
 
         UserRef.keepSynced(true);
@@ -240,33 +293,47 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     }
 
 
+    void clear(){
+txtDate.setText("");
+edtReason.setText("");
+    }
+
+
+
     private void sendRequestToHandyMan() {
         final String getReason = edtReason.getText().toString();
 
-        if (!edtReason.toString().isEmpty()) {
+        if (!edtReason.getText().toString().isEmpty()) {
+            btnRequest.setEnabled(true);
+            loading.setMessage("Making the request please wait");
+            loading.show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
 
-                    Map<String, Object> leave = new HashMap<>();
-                    leave.put("userId", uid);
-                    leave.put("ownerName", ownName);
-                    leave.put("ownerImage", ownerPhoto);
-                    leave.put("date", ServerValue.TIMESTAMP);
-                    leave.put("reason", getReason);
-                    leave.put("response", notApproved);
+                    Map<String, Object> requestSent = new HashMap<>();
+                    requestSent.put("userId", uid);
+                    requestSent.put("ownerName", ownName);
+                    requestSent.put("ownerImage", ownerPhoto);
+                    requestSent.put("date", ServerValue.TIMESTAMP);
+                    requestSent.put("reason", getReason);
+                    requestSent.put("response", notApproved);
 
 
                     String requestId = requestDbRef.push().getKey();
                     assert requestId != null;
 
-                    requestDbRef.child(requestId).setValue(leave).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    requestDbRef.child(requestId).setValue(requestSent).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+                                clear();
+                                loading.dismiss();
                                 makeToast("Request has been sent");
                             } else {
+                                loading.dismiss();
                                 makeToast("Request Failed try again");
                             }
 
@@ -284,9 +351,16 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
 
         } else if (edtReason.getText().toString().isEmpty()) {
-            edtReason.setError("Please state your reason");
             makeToast("Please state your reason");
+            btnRequest.setEnabled(false);
         }
+
+
+
+
+
+
+
 
 
     }

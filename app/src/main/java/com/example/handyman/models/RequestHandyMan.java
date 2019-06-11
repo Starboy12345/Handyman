@@ -1,7 +1,7 @@
 package com.example.handyman.models;
 
 public class RequestHandyMan {
-    private String UserId;
+    private String senderUserId,handyManId;
     private String ownerName;
     private String handyManName;
     String ownerImage, handyManImage;
@@ -32,14 +32,21 @@ public class RequestHandyMan {
     public RequestHandyMan() {
     }
 
-    public String getUserId() {
-        return UserId;
+    public String getSenderUserId() {
+        return senderUserId;
     }
 
-    public void setUserId(String userId) {
-        UserId = userId;
+    public void setSenderUserId(String senderUserId) {
+        this.senderUserId = senderUserId;
     }
 
+    public String getHandyManId() {
+        return handyManId;
+    }
+
+    public void setHandyManId(String handyManId) {
+        this.handyManId = handyManId;
+    }
 
     public String getOwnerImage() {
         return ownerImage;
