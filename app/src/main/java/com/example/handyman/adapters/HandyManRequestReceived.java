@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
 import com.example.handyman.activities.RequestHandyManActivity;
+import com.example.handyman.activities.handymanactivity.AcceptOrRejectActivity;
 import com.example.handyman.models.RequestHandyMan;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -48,7 +49,7 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
             @Override
             public void onClick(View v) {
 
-                intent = new Intent(v.getContext(), RequestHandyManActivity.class);
+                intent = new Intent(v.getContext(), AcceptOrRejectActivity.class);
                 intent.putExtra("position", getAdapterPosition);
                 intent.putExtra("name", model.getOwnerName());
                 intent.putExtra("image", model.getOwnerImage());
