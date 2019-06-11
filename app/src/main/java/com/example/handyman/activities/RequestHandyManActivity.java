@@ -71,42 +71,12 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
                 Locale.US);
 
 
-        retrieveUserDetails();
+
 
         initViews();
         initListener();
     }
 
-    private void retrieveUserDetails() {
-
-        UserRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
-                    if (dataSnapshot.exists()) {
-                        //retrieve the details and set the on the users profile
-                        ownName = (String) dataSnapshot.child("fullName").getValue();
-                        ownerPhoto = (String) dataSnapshot.child("image").getValue();
-
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                try {
-                    Log.d(TAG, "Error : " + databaseError.getMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
 
 
     private void initListener() {
@@ -159,6 +129,33 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         UserRef.keepSynced(true);
         requestDbRef.keepSynced(true);
 
+
+        UserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    if (dataSnapshot.exists()) {
+                        //retrieve the details and set the on the users profile
+                        ownName = (String) dataSnapshot.child("fullName").getValue();
+                        ownerPhoto = (String) dataSnapshot.child("image").getValue();
+
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                try {
+                    Log.d(TAG, "Error : " + databaseError.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
