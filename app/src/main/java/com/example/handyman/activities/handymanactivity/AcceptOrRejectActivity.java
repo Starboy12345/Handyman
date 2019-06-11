@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
-import com.example.handyman.utils.GetDateTime;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,12 +34,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AcceptOrRejectActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnAcpt, btnRejct;
-    private String uid,response, getHandyManId, getLocation, getName, getDate, getReason, getPhoto, adapterPosition;
+    private String uid, response, getHandyManId, getLocation, getName, getDate, getReason, getPhoto, adapterPosition;
     private Intent intent;
     TextView name, dtate, reason;
     ProgressDialog loading;
     CircleImageView mPhto;
-    private String  notApproved,accepted,rejected;
+    private String notApproved, accepted, rejected;
     private DatabaseReference requestDbref;
 
     @Override
@@ -80,8 +77,6 @@ public class AcceptOrRejectActivity extends AppCompatActivity implements View.On
                     }
 
 
-
-
                 }
 
             }
@@ -89,7 +84,7 @@ public class AcceptOrRejectActivity extends AppCompatActivity implements View.On
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 makeToast("Error " + databaseError.getDetails());
-              //  Log.d(TAG, "onCancelled: " + databaseError.getMessage());
+                //  Log.d(TAG, "onCancelled: " + databaseError.getMessage());
                 //Toast.makeText(ApproveLeaveActivity.this, databaseError.getDetails(), Toast.LENGTH_LONG).show();
             }
         });
@@ -119,7 +114,7 @@ public class AcceptOrRejectActivity extends AppCompatActivity implements View.On
             getDate = intent.getStringExtra("date");
             getReason = intent.getStringExtra("reason");
             getPhoto = intent.getStringExtra("image");
-           // getLocation = intent.getStringExtra("location");
+            // getLocation = intent.getStringExtra("location");
 
             name.setText(getName);
             dtate.setText(getDate);
@@ -127,7 +122,7 @@ public class AcceptOrRejectActivity extends AppCompatActivity implements View.On
             Glide.with(this).load(getPhoto).into(mPhto);
 
             requestDbref =
-                    FirebaseDatabase.getInstance().getReference().child("Reports").child(adapterPosition);
+                    FirebaseDatabase.getInstance().getReference().child("Requests").child(adapterPosition);
 
             loading.setMessage("Loading please wait");
 
@@ -148,7 +143,7 @@ public class AcceptOrRejectActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnAccept:
                 btnAcpt.setEnabled(false);
 
@@ -228,7 +223,6 @@ public class AcceptOrRejectActivity extends AppCompatActivity implements View.On
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
-
 
 
     //Method to approve l
@@ -319,9 +313,6 @@ public class AcceptOrRejectActivity extends AppCompatActivity implements View.On
         });
 
     }
-
-
-
 
 
 }

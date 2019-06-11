@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
-import com.example.handyman.activities.RequestHandyManActivity;
 import com.example.handyman.activities.handymanactivity.AcceptOrRejectActivity;
 import com.example.handyman.models.RequestHandyMan;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
