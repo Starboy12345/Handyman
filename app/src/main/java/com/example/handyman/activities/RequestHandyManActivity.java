@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -226,7 +227,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
     //if date selected is before the current date ... display error
     void displayErrorOnStartDateSelected() {
-        txtDate.setError("please select a day after today");
+        txtDate.setText("Please select a day after today");
         txtDate.setTextColor(getResources().getColor(R.color.colorRed));
         btnRequest.setEnabled(false);
 
@@ -242,8 +243,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     private void sendRequestToHandyMan() {
         final String getReason = edtReason.getText().toString();
 
-        if (!edtReason.getText().toString().isEmpty()) {
-
+        if (!edtReason.toString().isEmpty()) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -284,6 +284,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
 
         } else if (edtReason.getText().toString().isEmpty()) {
+            edtReason.setError("Please state your reason");
             makeToast("Please state your reason");
         }
 
