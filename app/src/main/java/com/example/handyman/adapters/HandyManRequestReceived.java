@@ -1,7 +1,9 @@
 package com.example.handyman.adapters;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
-import com.example.handyman.activities.RequestHandyManActivity;
 import com.example.handyman.models.RequestHandyMan;
-import com.example.handyman.models.User;
-import com.example.handyman.utils.GetDateTime;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
@@ -49,16 +48,16 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
             @Override
             public void onClick(View v) {
 
-
-                intent = new Intent(v.getContext(), RequestHandyManActivity.class);
-                intent.putExtra("position", getAdapterPosition);
-                intent.putExtra("name", model.getFullName());
-                intent.putExtra("image", model.getImage());
-                intent.putExtra("occupation", model.getOccupation());
-                intent.putExtra("details", model.getDetails());
-                intent.putExtra("location", model.getLocation());
-
-                v.getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                new AlertDialog.Builder(v.getContext())
+                        .setIcon(Integer.parseInt(model.getOwnerImage()))
+                        .setTitle(model.getOwnerName())
+                        .setMessage(model.getReason())
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
 
 
             }
@@ -116,17 +115,11 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
         }
 
 
-
         //display the details
         void showResponse(String s) {
             TextView loc = view.findViewById(R.id.txtResultsHandyMan);
             loc.setText(s);
         }
-
-
-
-
-
 
 
     }
