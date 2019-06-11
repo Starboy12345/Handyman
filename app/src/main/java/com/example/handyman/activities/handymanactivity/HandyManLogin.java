@@ -110,6 +110,7 @@ public class HandyManLogin extends AppCompatActivity {
                                     finish();
                                     loadingbar.dismiss();
                                 }else{
+                                    loadingbar.dismiss();
                                     new AlertDialog.Builder(HandyManLogin.this)
                                             .setMessage("Hello" + " " + email + " "
                                                     + " " + "\n" + "please check your email  " + "\n" +

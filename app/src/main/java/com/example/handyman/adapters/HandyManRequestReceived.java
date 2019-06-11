@@ -1,9 +1,7 @@
 package com.example.handyman.adapters;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
+import com.example.handyman.activities.RequestHandyManActivity;
 import com.example.handyman.models.RequestHandyMan;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -22,7 +21,7 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHandyMan, HandyManRequestReceived.HandyManRequest> {
+public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHandyMan, HandyManRequestReceived.HandyManRequestViewHolder> {
     private Intent intent;
 
     /**
@@ -36,11 +35,12 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull HandyManRequestReceived.HandyManRequest holder, int position, @NonNull final RequestHandyMan model) {
+    protected void onBindViewHolder(@NonNull HandyManRequestViewHolder holder, int position, @NonNull final RequestHandyMan model) {
         holder.showName(model.getOwnerName());
         holder.showUserPhoto(model.getOwnerImage());
         holder.showResponse(model.getResponse());
         holder.showDate(model.getDate());
+        holder.showReason(model.getReason());
 
         final String getAdapterPosition = getRef(position).getKey();
 
@@ -48,15 +48,14 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
             @Override
             public void onClick(View v) {
 
-                new AlertDialog.Builder(v.getContext())
-                        .setTitle(model.getOwnerName())
-                        .setMessage(model.getReason())
-                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
+                intent = new Intent(v.getContext(), RequestHandyManActivity.class);
+                intent.putExtra("position", getAdapterPosition);
+                intent.putExtra("name", model.getOwnerName());
+                intent.putExtra("image", model.getOwnerImage());
+                intent.putExtra("date", model.getDate());
+                intent.putExtra("reason", model.getReason());
+
+                v.getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
 
             }
@@ -65,19 +64,19 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
 
     @NonNull
     @Override
-    public HandyManRequestReceived.HandyManRequest onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new HandyManRequestReceived.HandyManRequest((LayoutInflater.from(viewGroup.getContext())
+    public HandyManRequestViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        return new HandyManRequestViewHolder((LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.layout_handyman_request_received, viewGroup, false)));
     }
 
 
     //an inner class to hold the views to be inflated
-    public class HandyManRequest extends RecyclerView.ViewHolder {
+  public static   class HandyManRequestViewHolder extends RecyclerView.ViewHolder {
         private View view;
         private Button btnView;
 
 
-        HandyManRequest(@NonNull View itemView) {
+        HandyManRequestViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
             btnView = view.findViewById(R.id.btnView);
@@ -109,7 +108,7 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
 
         //display the Name
         void showName(String s) {
-            TextView name = view.findViewById(R.id.txtYou);
+            TextView name = view.findViewById(R.id.txtNameOfCustomer);
             name.setText(s);
         }
 
@@ -118,6 +117,12 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
         void showResponse(String s) {
             TextView loc = view.findViewById(R.id.txtResultsHandyMan);
             loc.setText(s);
+        }
+
+        //display the reason
+        void showReason(String s) {
+            TextView reason = view.findViewById(R.id.txtReason);
+            reason.setText(s);
         }
 
 

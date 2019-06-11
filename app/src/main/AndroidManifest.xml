@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.RollerListActivity"></activity>
+        <activity android:name=".activities.handymanactivity.AcceptOrRejectActivity"></activity>
+        <activity android:name=".activities.RollerListActivity" />
         <activity android:name=".activities.PlumberListActivity" />
         <activity android:name=".activities.GardenerListActivity" />
         <activity android:name=".activities.RequestHandyManActivity" />

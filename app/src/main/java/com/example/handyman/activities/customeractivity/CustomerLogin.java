@@ -111,6 +111,7 @@ public class CustomerLogin extends AppCompatActivity {
                                     finish();
                                     loadingbar.dismiss();
                                 }else{
+                                    loadingbar.dismiss();
                                     new AlertDialog.Builder(CustomerLogin.this)
                                             .setMessage("Hello" + " " + email + " "
                                                     + " " + "\n" + "please check your email  " + "\n" +

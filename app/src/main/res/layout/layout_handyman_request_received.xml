@@ -2,13 +2,14 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="@dimen/eightDp"
         app:cardCornerRadius="@dimen/fourDp"
         app:cardElevation="@dimen/fourDp"
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/btnView"
                 app:layout_constraintStart_toEndOf="@+id/imgUserPhotooo"
@@ -74,19 +76,45 @@
 
             <TextView
                 android:id="@+id/txtResultsHandyMan"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnView"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imgUserPhotooo"
                 app:layout_constraintTop_toBottomOf="@+id/txtRequestDate" />
+
+            <TextView
+                android:id="@+id/txtNameOfCustomer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/imgUserPhotooo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgUserPhotooo" />
+
+            <TextView
+                android:id="@+id/txtReason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/btnView"
+                app:layout_constraintStart_toStartOf="@+id/btnView"
+                app:layout_constraintTop_toBottomOf="@+id/btnView" />
+
+            <TextView
+                android:id="@+id/txtLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/btnView"
+                app:layout_constraintStart_toStartOf="@+id/btnView"
+                app:layout_constraintTop_toBottomOf="@+id/txtReason" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

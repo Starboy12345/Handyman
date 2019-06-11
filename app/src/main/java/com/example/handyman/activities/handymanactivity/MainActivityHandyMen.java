@@ -1,5 +1,7 @@
 package com.example.handyman.activities.handymanactivity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.handyman.R;
 import com.example.handyman.activities.ActivityMechanicList;
@@ -28,18 +31,34 @@ public class MainActivityHandyMen extends AppCompatActivity {
     FirebaseUser firebaseUser;
     String userId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_handy_men);
 
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
-        userId = firebaseUser.getUid();
 
+
+        initViews();
+
+
+        setUpRecycler();
+    }
+
+    private void initViews() {
         requests = FirebaseDatabase.getInstance().getReference().child("Requests");
         requests.keepSynced(true);
-        setUpRecycler();
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+        assert firebaseUser != null;
+        userId = firebaseUser.getUid();
+
+
+
+
+
+
     }
 
     private void setUpRecycler() {
