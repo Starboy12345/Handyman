@@ -1,4 +1,4 @@
-package com.example.handyman;
+package com.example.handyman.activities.customeractivity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.handyman.R;
 import com.example.handyman.models.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;

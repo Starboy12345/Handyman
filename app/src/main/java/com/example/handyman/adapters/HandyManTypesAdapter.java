@@ -11,14 +11,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
-import com.example.handyman.RequestHandyManActivity;
+import com.example.handyman.activities.RequestHandyManActivity;
 import com.example.handyman.models.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapter.MechanicViewHolder> {
+public class HandyManTypesAdapter extends FirebaseRecyclerAdapter<User, HandyManTypesAdapter.MechanicViewHolder> {
     private Intent intent;
 
     /**
@@ -27,7 +27,7 @@ public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapt
      *
      * @param options
      */
-    public HandyManAdapter(@NonNull FirebaseRecyclerOptions<User> options) {
+    public HandyManTypesAdapter(@NonNull FirebaseRecyclerOptions<User> options) {
         super(options);
     }
 
@@ -52,7 +52,7 @@ public class HandyManAdapter extends FirebaseRecyclerAdapter<User, HandyManAdapt
                 intent.putExtra("name", model.getFullName());
                 intent.putExtra("image", model.getImage());
                 intent.putExtra("occupation", model.getOccupation());
-                intent.putExtra("about", model.getAbout());
+                intent.putExtra("details", model.getDetails());
                 intent.putExtra("location", model.getLocation());
 
                 v.getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

@@ -1,7 +1,9 @@
-package com.example.handyman;
+package com.example.handyman.activities.handymanactivity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.handyman.R;
 
 public class MainActivityHandyMen extends AppCompatActivity {
 

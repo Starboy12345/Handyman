@@ -20,28 +20,28 @@
         <activity android:name=".activities.RollerListActivity"></activity>
         <activity android:name=".activities.PlumberListActivity" />
         <activity android:name=".activities.GardenerListActivity" />
-        <activity android:name=".RequestHandyManActivity" />
-        <activity android:name=".HandyManLogin" />
-        <activity android:name=".MainActivityHandyMen" />
+        <activity android:name=".activities.RequestHandyManActivity" />
+        <activity android:name=".activities.handymanactivity.HandyManLogin" />
+        <activity android:name=".activities.handymanactivity.MainActivityHandyMen" />
         <activity android:name=".models.Listofrequest" />
         <activity android:name=".Chooseurregistertype" />
-        <activity android:name=".HandymanRegister" />
+        <activity android:name=".activities.handymanactivity.HandymanRegister" />
         <activity android:name=".EditProfile" />
         <activity android:name=".Forgotpassword" />
         <activity android:name=".Handymantypes" />
         <activity
-            android:name=".MainActivityCustomers"
+            android:name=".activities.customeractivity.MainActivityCustomers"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CustomerRegister" />
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".activities.customeractivity.CustomerRegister" />
+        <activity android:name=".activities.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CustomerLogin" />
+        <activity android:name=".activities.customeractivity.CustomerLogin" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

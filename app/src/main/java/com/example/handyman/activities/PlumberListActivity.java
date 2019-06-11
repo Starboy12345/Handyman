@@ -9,21 +9,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.handyman.R;
-import com.example.handyman.adapters.HandyManAdapter;
+import com.example.handyman.adapters.HandyManTypesAdapter;
 import com.example.handyman.models.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class PlumberListActivity extends AppCompatActivity {
-    HandyManAdapter adapter;
+    HandyManTypesAdapter adapter;
     private DatabaseReference plumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plumber_list);
 
-        plumber = FirebaseDatabase.getInstance().getReference().child("HandyMen").child("Mechanic");
+        plumber = FirebaseDatabase.getInstance().getReference().child("HandyMen").child("Plumber");
         plumber.keepSynced(true);
         setUpRecycler();
     }
@@ -55,7 +55,7 @@ public class PlumberListActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>().
                 setQuery(plumber, User.class).build();
 
-        adapter = new HandyManAdapter(options);
+        adapter = new HandyManTypesAdapter(options);
 
 
         //add decorator

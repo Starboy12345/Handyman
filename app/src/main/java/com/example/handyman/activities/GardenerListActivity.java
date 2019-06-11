@@ -9,14 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.handyman.R;
-import com.example.handyman.adapters.HandyManAdapter;
+import com.example.handyman.adapters.HandyManTypesAdapter;
 import com.example.handyman.models.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class GardenerListActivity extends AppCompatActivity {
-    HandyManAdapter adapter;
+    HandyManTypesAdapter adapter;
     private DatabaseReference garderner;
 
     @Override
@@ -56,7 +56,7 @@ public class GardenerListActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>().
                 setQuery(garderner, User.class).build();
 
-        adapter = new HandyManAdapter(options);
+        adapter = new HandyManTypesAdapter(options);
 
 
         //add decorator

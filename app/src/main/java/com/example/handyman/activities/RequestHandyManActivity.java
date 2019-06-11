@@ -1,4 +1,4 @@
-package com.example.handyman;
+package com.example.handyman.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.handyman.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -21,9 +22,9 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RequestHandyManActivity extends AppCompatActivity implements View.OnClickListener{
-    private TextView txtName,txtOccupation,txtDate;
+    private TextView txtName,txtOccupation,txtDate,edtAbt;
     private CircleImageView mPhoto;
-    private EditText edtAbt, edtReason;
+    private EditText  edtReason;
     private Button btnRequest,btnStartDate;
     private String uid,getLocation, getName, getAbt, getOccupation,  getPhoto, adapterPosition;
     private Intent intent;
@@ -71,7 +72,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         if (intent != null) {
             adapterPosition = intent.getStringExtra("position");
             getName = intent.getStringExtra("name");
-            getAbt = intent.getStringExtra("about");
+            getAbt = intent.getStringExtra("details");
             getOccupation = intent.getStringExtra("occupation");
             getPhoto = intent.getStringExtra("image");
             getLocation = intent.getStringExtra("location");

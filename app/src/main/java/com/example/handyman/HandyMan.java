@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.example.handyman.activities.WelcomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -20,10 +21,7 @@ public class HandyMan extends Application {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseDatabase.getInstance().getReference().keepSynced(true);
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() == null){
-            startActivity(new Intent(getApplicationContext(),WelcomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        }
+
     }
 
     @Override

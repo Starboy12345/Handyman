@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.handyman.activities.customeractivity.CustomerRegister;
+import com.example.handyman.activities.handymanactivity.HandymanRegister;
+
 public class Chooseurregistertype extends AppCompatActivity {
     Button btncustomer,btnhandyman;
 
@@ -20,7 +23,7 @@ public class Chooseurregistertype extends AppCompatActivity {
         btncustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Chooseurregistertype.this,CustomerRegister.class));
+                startActivity(new Intent(Chooseurregistertype.this, CustomerRegister.class));
             }
         });
 
