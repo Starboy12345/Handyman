@@ -2,6 +2,7 @@ package com.example.handyman.activities.customeractivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.handyman.EditProfile;
 import com.example.handyman.R;
-import com.example.handyman.activities.handymanactivity.ActivityMechanicList;
 import com.example.handyman.activities.handymanactivity.CarpenterActivity;
 import com.example.handyman.activities.handymanactivity.GardenerListActivity;
 import com.example.handyman.activities.handymanactivity.PainterActivity;
@@ -76,6 +76,23 @@ public class MainActivityCustomers extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        float[] results = new float[1];
+        Location.distanceBetween(5.5, -0.2, 3.56, -0.58, results);
+        float distanceInMeters = results[0];
+        boolean isWithinRange = distanceInMeters < 145;
+
+        if (!isWithinRange) {
+
+            Log.i(TAG, "cannot check in from this location: ");
+            //makeToast("cannot check in from this location ");
+        } else {
+            // makeToast("Can check in");
+            Log.i(TAG, " can check in ");
+        }
+
+        Log.i(TAG, "onLocationChanged --- distance in meters: " + distanceInMeters);
+
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         if (mAuth.getCurrentUser() == null) {
@@ -99,7 +116,7 @@ public class MainActivityCustomers extends AppCompatActivity
                 // Toast.makeText(MainActivityCustomers.this, myImageNameList[position] + " Clicked", Toast.LENGTH_SHORT).show();
 
                 if (position == 0) {
-                    startActivity(new Intent(MainActivityCustomers.this, ActivityMechanicList.class));
+                    startActivity(new Intent(MainActivityCustomers.this, HandyManMapsActivity.class));
                     //  finish();
                 }
                 if (position == 1) {
@@ -197,12 +214,10 @@ public class MainActivityCustomers extends AppCompatActivity
         if (id == R.id.nav_home) {
             startActivity(new Intent(this, MainActivityCustomers.class));
             // Handle the camera action
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_profile) {
             startActivity(new Intent(this, EditProfile.class));
 
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_logout) {
+        }  else if (id == R.id.nav_logout) {
             AlertDialog.Builder a_builder = new AlertDialog.Builder(MainActivityCustomers.this);
             a_builder.setMessage("Do you really want to Logout")
                     .setCancelable(true)

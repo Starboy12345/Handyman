@@ -78,8 +78,9 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initGoogleAPIClient();//Init Google API Client
-        checkPermissions();//Check Permission
+        initGoogleAPIClient();
+        checkPermissions();
+
 
         setContentView(R.layout.activity_welcome);
         btncustomer = findViewById(R.id.btncustomerlogin);
@@ -133,7 +134,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
 
-    /*  Show Popup to access User Permission  */
+    /*  Show Popup to access Customer Permission  */
     private void requestLocationPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(WelcomeActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(WelcomeActivity.this,

@@ -24,7 +24,7 @@ import com.bumptech.glide.Glide;
 import com.example.handyman.R;
 import com.example.handyman.adapters.CustomerRequestSent;
 import com.example.handyman.interfaces.RecyclerItemTouchHelperDeleteRequest;
-import com.example.handyman.models.RequestHandyMan;
+import com.example.handyman.models.HandyMan;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,7 +36,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
@@ -73,6 +72,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
     CustomerRequestSent adapter;
     private DatabaseReference mRequests;
     RecyclerView recyclerView;
+    private String datePosted;
 
 
     @Override
@@ -115,8 +115,8 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         Query query = mRequests.orderByChild("senderUserId").equalTo(uid);
 
 
-        FirebaseRecyclerOptions<RequestHandyMan> options = new FirebaseRecyclerOptions.Builder<RequestHandyMan>().
-                setQuery(query, RequestHandyMan.class).build();
+        FirebaseRecyclerOptions<HandyMan> options = new FirebaseRecyclerOptions.Builder<HandyMan>().
+                setQuery(query, HandyMan.class).build();
 
         adapter = new CustomerRequestSent(options);
 
@@ -177,7 +177,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
     private void initViews() {
         intent = getIntent();
-        txtName = findViewById(R.id.handyManName);
+        txtName = findViewById(R.id.txtHandyManName);
         txtOccupation = findViewById(R.id.handyManOccupation);
         mPhoto = findViewById(R.id.handyManPhoto);
         loading = new ProgressDialog(this);
@@ -201,9 +201,9 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
             edtAbt.setText(getAbt);
             Glide.with(this).load(getPhoto).into(mPhoto);
 
-            dayOfTheWeek = new SimpleDateFormat("EEE", Locale.ENGLISH).format(System.currentTimeMillis());
-            //request
-            request = FirebaseDatabase.getInstance().getReference("Request").child(dayOfTheWeek).child(adapterPosition);
+//            dayOfTheWeek = new SimpleDateFormat("EEE", Locale.ENGLISH).format(System.currentTimeMillis());
+//            //request
+//            request = FirebaseDatabase.getInstance().getReference("Request").child(dayOfTheWeek).child(adapterPosition);
         }
 
 
@@ -286,6 +286,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
                     startDateSelected = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
 
+                    Log.i(TAG, "onDateSet: " +  startDateSelected);
 
                     if (date.before(new Date(startDateSelected))) {
                         checkSuccessSelectStartDate();
@@ -318,8 +319,8 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
     //if date selected is before the current date ... display error
     void displayErrorOnStartDateSelected() {
-        txtDate.setError("Please select a day after today");
-        txtDate.setTextColor(getResources().getColor(R.color.colorRed));
+        makeToast("Please select a day after today");
+        txtDate.setText("");
         btnRequest.setEnabled(false);
 
     }
@@ -339,6 +340,16 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
     private void sendRequestToHandyMan() {
         final String getReason = edtReason.getText().toString();
+        sfd = new SimpleDateFormat("EEE dd-MM-yyyy '@' hh:mm aa",
+                Locale.US);
+        try {
+            Calendar calendar = Calendar.getInstance();
+            Date today = calendar.getTime();
+            datePosted = sfd.format(new Date(today.toString()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (!edtReason.getText().toString().isEmpty() && !txtDate.getText().toString().isEmpty()) {
             btnRequest.setEnabled(true);
@@ -352,10 +363,14 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
 
                     Map<String, Object> requestSent = new HashMap<>();
                     requestSent.put("senderUserId", uid);
+                    requestSent.put("senderName", ownName);
+                    requestSent.put("senderPhoto", ownerPhoto);
+
                     requestSent.put("handyManId", getHandyManId);
-                    requestSent.put("ownerName", ownName);
-                    requestSent.put("ownerImage", ownerPhoto);
-                    requestSent.put("date", ServerValue.TIMESTAMP);
+                    requestSent.put("handyManName", getName);
+                    requestSent.put("handyManPhoto", getPhoto);
+
+                    requestSent.put("date", datePosted);
                     requestSent.put("reason", getReason);
                     requestSent.put("response", notApproved);
 

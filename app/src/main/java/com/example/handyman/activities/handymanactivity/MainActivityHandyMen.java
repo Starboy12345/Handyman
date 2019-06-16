@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.example.handyman.R;
 import com.example.handyman.adapters.HandyManRequestReceived;
-import com.example.handyman.models.RequestHandyMan;
+import com.example.handyman.models.Customer;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -95,8 +95,8 @@ public class MainActivityHandyMen extends AppCompatActivity {
 
         Query query = requests.orderByChild("handyManId").equalTo(userId);
 
-        FirebaseRecyclerOptions<RequestHandyMan> options = new FirebaseRecyclerOptions.Builder<RequestHandyMan>().
-                setQuery(query, RequestHandyMan.class).build();
+        FirebaseRecyclerOptions<Customer> options = new FirebaseRecyclerOptions.Builder<Customer>().
+                setQuery(query, Customer.class).build();
 
         adapter = new HandyManRequestReceived(options);
 

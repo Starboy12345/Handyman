@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
 import com.example.handyman.activities.handymanactivity.AcceptOrRejectActivity;
-import com.example.handyman.models.RequestHandyMan;
+import com.example.handyman.models.Customer;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
@@ -21,7 +21,7 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHandyMan, HandyManRequestReceived.HandyManRequestViewHolder> {
+public class HandyManRequestReceived extends FirebaseRecyclerAdapter<Customer, HandyManRequestReceived.HandyManRequestViewHolder> {
     private Intent intent;
 
     /**
@@ -30,14 +30,14 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
      *
      * @param options
      */
-    public HandyManRequestReceived(@NonNull FirebaseRecyclerOptions<RequestHandyMan> options) {
+    public HandyManRequestReceived(@NonNull FirebaseRecyclerOptions<Customer> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull HandyManRequestViewHolder holder, int position, @NonNull final RequestHandyMan model) {
-        holder.showName(model.getOwnerName());
-        holder.showUserPhoto(model.getOwnerImage());
+    protected void onBindViewHolder(@NonNull HandyManRequestViewHolder holder, int position, @NonNull final Customer model) {
+        holder.showName(model.getFullName());
+        holder.showUserPhoto(model.getImage());
         holder.showResponse(model.getResponse());
         holder.showDate(model.getDate());
         holder.showReason(model.getReason());
@@ -50,8 +50,8 @@ public class HandyManRequestReceived extends FirebaseRecyclerAdapter<RequestHand
 
                 intent = new Intent(v.getContext(), AcceptOrRejectActivity.class);
                 intent.putExtra("position", getAdapterPosition);
-                intent.putExtra("name", model.getOwnerName());
-                intent.putExtra("image", model.getOwnerImage());
+                intent.putExtra("name", model.getFullName());
+                intent.putExtra("image", model.getImage());
                 intent.putExtra("date", model.getDate());
                 intent.putExtra("reason", model.getReason());
 

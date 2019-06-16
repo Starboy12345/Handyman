@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
 import com.example.handyman.activities.customeractivity.CustomerLogin;
-import com.example.handyman.models.User;
+import com.example.handyman.models.Customer;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -185,7 +185,7 @@ public class HandymanRegister extends AppCompatActivity {
                             CurrentUserid = firebaseUser.getUid();
 
                             //class created within the files
-                            final User user = new User(CurrentUserid, email, number, fullname,occupation,urlShortNer,"No details");
+                            final Customer customer = new Customer(CurrentUserid, email, number, fullname,occupation,urlShortNer,"No details",0,0);
 
                             firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -235,9 +235,9 @@ public class HandymanRegister extends AppCompatActivity {
                                                     getImageUri = downLoadUri.toString();
 
 //class created within the files
-                                                    final User user =
-                                                            new User(CurrentUserid, email, number, fullname,occupation,getImageUri);
-                                                    handyMenDbRef.child(occupation).child(CurrentUserid).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    final Customer customer =
+                                                            new Customer(CurrentUserid, email, number, fullname,occupation,getImageUri,"",0,0);
+                                                    handyMenDbRef.child(occupation).child(CurrentUserid).setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
 

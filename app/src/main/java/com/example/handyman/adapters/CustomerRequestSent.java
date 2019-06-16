@@ -9,22 +9,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
-import com.example.handyman.models.RequestHandyMan;
+import com.example.handyman.activities.customeractivity.ChatActivity;
+import com.example.handyman.activities.customeractivity.RatingActivity;
+import com.example.handyman.models.HandyMan;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CustomerRequestSent extends FirebaseRecyclerAdapter<RequestHandyMan, CustomerRequestSent.HandyManRequest> {
+public class CustomerRequestSent extends FirebaseRecyclerAdapter<HandyMan, CustomerRequestSent.HandyManRequest> {
     private Intent intent;
 
     /**
@@ -33,14 +32,14 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<RequestHandyMan
      *
      * @param options
      */
-    public CustomerRequestSent(@NonNull FirebaseRecyclerOptions<RequestHandyMan> options) {
+    public CustomerRequestSent(@NonNull FirebaseRecyclerOptions<HandyMan> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull HandyManRequest holder, int position, @NonNull final RequestHandyMan model) {
-        holder.showName(model.getOwnerName());
-        holder.showUserPhoto(model.getOwnerImage());
+    protected void onBindViewHolder(@NonNull HandyManRequest holder, int position, @NonNull final HandyMan model) {
+        holder.showName(model.getHandyManName());
+        holder.showUserPhoto(model.getHandyManPhoto());
         holder.showResponse(model.getResponse());
         holder.showDate(model.getDate());
 
@@ -51,7 +50,8 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<RequestHandyMan
             public void onClick(View v) {
 
                 new AlertDialog.Builder(v.getContext())
-                        .setTitle(model.getOwnerName())
+                        .setIcon(v.getResources().getDrawable(R.drawable.request))
+                        .setTitle("Your request to " + model.getHandyManName())
                         .setMessage(model.getReason())
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                             @Override
@@ -63,6 +63,71 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<RequestHandyMan
 
             }
         });
+
+        holder.btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(v.getContext(), ChatActivity.class);
+                intent.putExtra("position", getAdapterPosition);
+                intent.putExtra("photo", model.getHandyManPhoto());
+                intent.putExtra("name", model.getHandyManName());
+                intent.putExtra("content", model.getReason());
+                intent.putExtra("senderName", model.getSenderName());
+                intent.putExtra("senderPhoto", model.getSenderPhoto());
+                v.getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            }
+        });
+
+
+        holder.btnRateHandyMan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                new AlertDialog.Builder(view.getContext())
+                        .setIcon(view.getResources().getDrawable(R.drawable.handshake))
+                        .setTitle("Request Accepted")
+                        .setMessage("Is the job done?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+
+                                new AlertDialog.Builder(view.getContext())
+                                        .setIcon(view.getResources().getDrawable(R.drawable.handshake))
+                                        .setTitle("Rate " + model.getHandyManName())
+                                        .setMessage("Would you like to rate " + model.getHandyManName() + " to "
+                                                + "improve working  experience?")
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+
+                                                intent = new Intent(view.getContext(), RatingActivity.class);
+                                                intent.putExtra("position", getAdapterPosition);
+                                                intent.putExtra("handyManPhoto", model.getHandyManPhoto());
+                                                intent.putExtra("handyManName", model.getHandyManName());
+                                                view.getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+
+                                            }
+                                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).create().show();
+
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+            }
+        });
+
     }
 
     @NonNull
@@ -76,7 +141,7 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<RequestHandyMan
     //an inner class to hold the views to be inflated
     public class HandyManRequest extends RecyclerView.ViewHolder {
         private View view;
-        private Button btnView;
+        private ImageButton btnView, btnChat, btnRateHandyMan;
         public ConstraintLayout viewForeground;
         RelativeLayout viewBackground;
 
@@ -84,23 +149,17 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<RequestHandyMan
             super(itemView);
             view = itemView;
             btnView = view.findViewById(R.id.btnView);
+            btnChat = view.findViewById(R.id.btnChat);
+            btnRateHandyMan = view.findViewById(R.id.btnRateHandyMan);
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
         }
 
 
-        void showDate(Long date) {
+        void showDate(String date) {
 
             TextView txtDate = view.findViewById(R.id.txtRequestDate);
-            SimpleDateFormat sfd = new SimpleDateFormat("'Requested on ' dd-MM-yyyy '@' hh:mm aa",
-                    Locale.US);
-
-            try {
-                txtDate.setText(sfd.format(date));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            txtDate.setText(String.format("Requested on %s", date));
         }
 
 
@@ -122,6 +181,18 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<RequestHandyMan
         //display the details
         void showResponse(String s) {
             TextView loc = view.findViewById(R.id.txtResultsHandyMan);
+            if (s.equals("Request Accepted")) {
+                btnRateHandyMan.setVisibility(View.VISIBLE);
+                btnChat.setVisibility(View.VISIBLE);
+                loc.setTextColor(view.getResources().getColor(R.color.colorGreen));
+
+            } else if(s.equals("Request Rejected")){
+                btnChat.setVisibility(View.INVISIBLE);
+                btnRateHandyMan.setVisibility(View.INVISIBLE);
+                loc.setTextColor(view.getResources().getColor(R.color.colorRed));
+            }
+
+
             loc.setText(s);
         }
 

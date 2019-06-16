@@ -10,7 +10,7 @@ import com.example.handyman.activities.WelcomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class HandyMan extends Application {
+public class HandyManApp extends Application {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

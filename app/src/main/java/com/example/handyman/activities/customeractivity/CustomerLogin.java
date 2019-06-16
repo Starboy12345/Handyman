@@ -238,7 +238,7 @@ public class CustomerLogin extends AppCompatActivity implements
     }
 
 
-    /*  Show Popup to access User Permission  */
+    /*  Show Popup to access Customer Permission  */
     private void requestLocationPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(CustomerLogin.this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(CustomerLogin.this,
@@ -335,6 +335,7 @@ public class CustomerLogin extends AppCompatActivity implements
 
                 } else {
 //                    updateGPSStatus("Location Permission denied.");
+                    Log.i(TAG, "onRequestPermissionsResult: denies");
                     Toast.makeText(CustomerLogin.this, "Location Permission denied.", Toast.LENGTH_SHORT).show();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
