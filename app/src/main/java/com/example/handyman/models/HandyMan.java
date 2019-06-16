@@ -1,6 +1,7 @@
 package com.example.handyman.models;
 
 public class HandyMan {
+    private float rating;
     private String userId;
     private String name;
     private String reason;
@@ -15,6 +16,19 @@ public class HandyMan {
     private  String senderPhoto;
     private String senderName;
     private String handyManName,handyManPhoto;
+
+
+
+    public HandyMan() {
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
 
     public String getHandyManName() {
         return handyManName;
@@ -46,9 +60,6 @@ public class HandyMan {
 
     public void setSenderPhoto(String senderPhoto) {
         this.senderPhoto = senderPhoto;
-    }
-
-    public HandyMan() {
     }
 
     public String getNumber() {

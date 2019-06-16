@@ -6,12 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.handyman.R;
@@ -37,29 +40,45 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<HandyMan, Custo
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull HandyManRequest holder, int position, @NonNull final HandyMan model) {
+    protected void onBindViewHolder(@NonNull final HandyManRequest holder, int position, @NonNull final HandyMan model) {
         holder.showName(model.getHandyManName());
         holder.showUserPhoto(model.getHandyManPhoto());
         holder.showResponse(model.getResponse());
         holder.showDate(model.getDate());
+        holder.showRating(model.getRating());
 
         final String getAdapterPosition = getRef(position).getKey();
 
         holder.btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (model.getRating() == 0.0) {
+                    new AlertDialog.Builder(v.getContext())
+                            .setIcon(v.getResources().getDrawable(R.drawable.request))
+                            .setTitle("Your request to " + model.getHandyManName())
+                            .setMessage(model.getReason())
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
 
-                new AlertDialog.Builder(v.getContext())
-                        .setIcon(v.getResources().getDrawable(R.drawable.request))
-                        .setTitle("Your request to " + model.getHandyManName())
-                        .setMessage(model.getReason())
-                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
+                } else if (model.getRating() > 0) {
 
+                    new AlertDialog.Builder(v.getContext())
+                            .setIcon(v.getResources().getDrawable(R.drawable.request))
+                            .setTitle("Your request to " + model.getHandyManName())
+                            .setMessage(model.getReason() + "\n\n\n" +
+                                    "You rated " + model.getHandyManName() + " "
+                                    + model.getRating() + " stars on the work done")
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
+                }
 
             }
         });
@@ -128,6 +147,15 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<HandyMan, Custo
             }
         });
 
+
+        holder.btnShowRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo create a map to show the route from customer to handy man
+                holder.makeToast("Working on maps");
+            }
+        });
+
     }
 
     @NonNull
@@ -141,9 +169,10 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<HandyMan, Custo
     //an inner class to hold the views to be inflated
     public class HandyManRequest extends RecyclerView.ViewHolder {
         private View view;
-        private ImageButton btnView, btnChat, btnRateHandyMan;
+        private ImageButton btnView, btnChat, btnRateHandyMan, btnShowRoute;
         public ConstraintLayout viewForeground;
-        RelativeLayout viewBackground;
+        private RelativeLayout viewBackground;
+        private RatingBar ratingBar;
 
         HandyManRequest(@NonNull View itemView) {
             super(itemView);
@@ -151,8 +180,10 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<HandyMan, Custo
             btnView = view.findViewById(R.id.btnView);
             btnChat = view.findViewById(R.id.btnChat);
             btnRateHandyMan = view.findViewById(R.id.btnRateHandyMan);
+            btnShowRoute = view.findViewById(R.id.imgBtnRouteOnMap);
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
+            ratingBar = view.findViewById(R.id.ratedResults);
         }
 
 
@@ -177,18 +208,33 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<HandyMan, Custo
             name.setText(s);
         }
 
+        //display the rating
+        void showRating(float rating) {
+            if (!String.valueOf(rating).isEmpty() && rating > 0) {
+                ratingBar.setVisibility(View.VISIBLE);
+                ratingBar.setRating(rating);
+                btnRateHandyMan.setEnabled(false);
+
+            } else if (rating == 0) {
+                ratingBar.setVisibility(View.INVISIBLE);
+            }
+
+        }
 
         //display the details
         void showResponse(String s) {
             TextView loc = view.findViewById(R.id.txtResultsHandyMan);
+            //customer can only chat , rate and view the route only when their request are accepted
             if (s.equals("Request Accepted")) {
                 btnRateHandyMan.setVisibility(View.VISIBLE);
                 btnChat.setVisibility(View.VISIBLE);
+                btnShowRoute.setVisibility(View.VISIBLE);
                 loc.setTextColor(view.getResources().getColor(R.color.colorGreen));
 
-            } else if(s.equals("Request Rejected")){
+            } else if (s.equals("Request Rejected")) {
                 btnChat.setVisibility(View.INVISIBLE);
                 btnRateHandyMan.setVisibility(View.INVISIBLE);
+                btnShowRoute.setVisibility(View.INVISIBLE);
                 loc.setTextColor(view.getResources().getColor(R.color.colorRed));
             }
 
@@ -196,7 +242,14 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<HandyMan, Custo
             loc.setText(s);
         }
 
+        void makeToast(String text) {
+            Toast toast = Toast.makeText(view.getContext(), text, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
+
 
     }
+
 
 }

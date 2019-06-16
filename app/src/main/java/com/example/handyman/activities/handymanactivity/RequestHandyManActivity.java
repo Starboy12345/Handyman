@@ -97,6 +97,8 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
         recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
@@ -373,6 +375,7 @@ public class RequestHandyManActivity extends AppCompatActivity implements View.O
                     requestSent.put("date", datePosted);
                     requestSent.put("reason", getReason);
                     requestSent.put("response", notApproved);
+                    requestSent.put("rating",0);
 
 
                     String requestId = requestDbRef.push().getKey();

@@ -27,10 +27,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.customeractivity.RatingActivity"
+        <activity android:name=".activities.customeractivity.ShowRouteActivity"></activity>
+        <activity
+            android:name=".activities.customeractivity.RatingActivity"
             android:excludeFromRecents="true"
             android:label=""
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog"/>
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog" />
         <activity
             android:name=".activities.customeractivity.ChatActivity"
             android:parentActivityName=".activities.handymanactivity.RequestHandyManActivity" />
