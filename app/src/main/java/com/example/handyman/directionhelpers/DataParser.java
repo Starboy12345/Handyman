@@ -12,7 +12,7 @@ import java.util.List;
 
 
 
-public class DataParser {
+public class DataParser{
     public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
 
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
@@ -24,7 +24,7 @@ public class DataParser {
             /** Traversing all routes */
             for (int i = 0; i < jRoutes.length(); i++) {
                 jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
-                List path = new ArrayList<>();
+                List<HashMap<String, String>> path = new ArrayList<HashMap<String, String>>();
                 /** Traversing all legs */
                 for (int j = 0; j < jLegs.length(); j++) {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
@@ -50,6 +50,7 @@ public class DataParser {
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return routes;
     }

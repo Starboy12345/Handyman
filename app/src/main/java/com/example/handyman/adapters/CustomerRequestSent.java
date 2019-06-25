@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.handyman.R;
 import com.example.handyman.activities.customeractivity.ChatActivity;
 import com.example.handyman.activities.customeractivity.RatingActivity;
+import com.example.handyman.activities.customeractivity.ShowRouteActivity;
 import com.example.handyman.models.HandyMan;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -40,7 +41,8 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<HandyMan, Custo
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final HandyManRequest holder, int position, @NonNull final HandyMan model) {
+    protected void onBindViewHolder(@NonNull final HandyManRequest holder, int position,
+                                    @NonNull final HandyMan model) {
         holder.showName(model.getHandyManName());
         holder.showUserPhoto(model.getHandyManPhoto());
         holder.showResponse(model.getResponse());
@@ -153,6 +155,12 @@ public class CustomerRequestSent extends FirebaseRecyclerAdapter<HandyMan, Custo
             public void onClick(View v) {
                 //todo create a map to show the route from customer to handy man
                 holder.makeToast("Working on maps");
+                intent = new Intent(v.getContext(), ShowRouteActivity.class);
+                intent.putExtra("position", getAdapterPosition);
+                intent.putExtra("latitude", model.getLatitude());
+                intent.putExtra("longitude", model.getLongitude());
+                v.getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
             }
         });
 

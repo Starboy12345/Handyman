@@ -44,7 +44,8 @@ public class HandyManTypesAdapter extends FirebaseRecyclerAdapter<HandyMan, Hand
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull MechanicViewHolder holder, int position, @NonNull final HandyMan model) {
+    protected void onBindViewHolder(@NonNull MechanicViewHolder holder,
+                                    int position, @NonNull final HandyMan model) {
         double distance;
         Location locationA = new Location("Point A");
         locationA.setLatitude(lat);
